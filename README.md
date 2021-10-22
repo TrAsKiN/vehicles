@@ -39,3 +39,35 @@ Configure and manage your server's vehicles simply via variables in your `server
 - `set disableRadio 0`
 - `set maxRoll 80.0`
 - `set persistStolen 1`
+
+### Add features
+
+To add functionality, simply call the function `exports.vehicles:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:
+
+- `name`: *string*
+- `data`: *table*
+- `entered`: *function(`data`)* or *nil*
+- `looped`: *function(`data`)* or *nil*
+- `exited`: *function(`data`)* or *nil*
+
+The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
+
+### Triggered events
+
+#### Client-side events
+
+- `vehicle:player:entered`
+  - *vehicle*: number
+- `vehicle:player:left`
+  - *vehicle*: number
+- `vehicle:data:sync`
+  - *vehicles*: table
+
+#### Server-side events
+
+- `vehicle:player:eject`
+  - *velocity*: vector3
+- `vehicle:data:toSync`
+  - *vehicle*: number
+  - *property*: string
+  - *value*: any
