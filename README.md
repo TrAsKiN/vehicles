@@ -46,9 +46,9 @@ To add functionality, simply call the function `exports.vehicles:registerVehicle
 
 - `name`: *string*
 - `data`: *table*
-- `entered`: *function(`data`)* or *nil*
-- `looped`: *function(`data`)* or *nil*
-- `exited`: *function(`data`)* or *nil*
+- `entered`: *function(`vehicle`, `data`)* or *nil*
+- `looped`: *function(`vehicle`, `data`)* or *nil*
+- `exited`: *function(`vehicle`, `data`)* or *nil*
 
 The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
 
