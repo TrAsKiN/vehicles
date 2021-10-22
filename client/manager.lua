@@ -1,12 +1,12 @@
 local vehicleHandlings = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
 local registeredFunctions = {}
-local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', 4.0))
-local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', 1.25))
-local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', 2.0))
-local DISABLE_RADAR = tonumber(GetConvar('disableRadar', 1))
-local DISABLE_RADIO = tonumber(GetConvar('disableRadio', 0))
-local MAX_ROLL = tonumber(GetConvar('maxRoll', 80.0))
-local PERSIST_STOLEN = tonumber(GetConvar('persistStolen', 1))
+local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', '4.0'))
+local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', '1.25'))
+local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', '2.0'))
+local DISABLE_RADAR = tonumber(GetConvar('disableRadar', '1'))
+local DISABLE_RADIO = tonumber(GetConvar('disableRadio', '0'))
+local MAX_ROLL = tonumber(GetConvar('maxRoll', '80.0'))
+local PERSIST_STOLEN = tonumber(GetConvar('persistStolen', '0'))
 
 AddEventHandler('gameEventTriggered', function (name, data)
     if name == 'CEventNetworkPlayerEnteredVehicle' then

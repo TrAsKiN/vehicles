@@ -1,8 +1,8 @@
-local FUEL_COMSUMPTION_PER_SECOND = tonumber(GetConvar('fuelComsumptionPerSecond', 0.08))
-local FUEL_COMSUMPTION_MULTIPLIER_ON_RESERVE = tonumber(GetConvar('fuelComsumptionMultiplierOnReserve', 1.2))
-local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_SMOKES = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineSmokes', 1.5))
-local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_FAILS = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineFails', 2.0))
-local FUEL_COMSUMPTION_MULTIPLIER_WHEN_TANK_LEAK = tonumber(GetConvar('fuelComsumptionMultiplierWhenTankLeak', 25.0))
+local FUEL_COMSUMPTION_PER_SECOND = tonumber(GetConvar('fuelComsumptionPerSecond', '0.08'))
+local FUEL_COMSUMPTION_MULTIPLIER_ON_RESERVE = tonumber(GetConvar('fuelComsumptionMultiplierOnReserve', '1.2'))
+local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_SMOKES = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineSmokes', '1.5'))
+local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_FAILS = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineFails', '2.0'))
+local FUEL_COMSUMPTION_MULTIPLIER_WHEN_TANK_LEAK = tonumber(GetConvar('fuelComsumptionMultiplierWhenTankLeak', '25.0'))
 local data = {
     timer = 0,
     initialFuelLevel = 0.0,

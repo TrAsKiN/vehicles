@@ -1,4 +1,4 @@
-local EJECTION_GFORCE = tonumber(GetConvar('ejectionGForce', 2.0))
+local EJECTION_GFORCE = tonumber(GetConvar('ejectionGForce', '2.0'))
 local seatbelt = false
 local data = {
     curentSpeed = 0.0,

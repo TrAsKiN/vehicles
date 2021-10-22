@@ -38,7 +38,7 @@ Configure and manage your server's vehicles simply via variables in your `server
 - `set disableRadar 1`
 - `set disableRadio 0`
 - `set maxRoll 80.0`
-- `set persistStolen 1`
+- `set persistStolen 0`
 
 ### Add features
 

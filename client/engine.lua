@@ -1,5 +1,5 @@
-local ENGINE_FAILURE_GFORCE = tonumber(GetConvar('engineFailureGForce', 1.0))
-local PERCENT_ENGINE_FAILURE_TIME = tonumber(GetConvar('percentEngineFailureTime', 25)) / 100
+local ENGINE_FAILURE_GFORCE = tonumber(GetConvar('engineFailureGForce', '1.0'))
+local PERCENT_ENGINE_FAILURE_TIME = tonumber(GetConvar('percentEngineFailureTime', '25')) / 100
 local data = {
     timer = 0,
     curentSpeed = 0.0,
