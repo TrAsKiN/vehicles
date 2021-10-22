@@ -1,16 +1,26 @@
 local vehicleHandlings = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
 local registeredFunctions = {}
-local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', 4))
+local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', 4.0))
 local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', 1.25))
-local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', 2))
+local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', 2.0))
 local DISABLE_RADAR = tonumber(GetConvar('disableRadar', 1))
 local DISABLE_RADIO = tonumber(GetConvar('disableRadio', 0))
 local MAX_ROLL = tonumber(GetConvar('maxRoll', 80.0))
+local PERSIST_STOLEN = tonumber(GetConvar('persistStolen', 1))
+
+AddEventHandler('gameEventTriggered', function (name, data)
+    if name == 'CEventNetworkPlayerEnteredVehicle' then
+        local player, vehicle = table.unpack(data)
+        if player == PlayerId() then
+            TriggerEvent('vehicle:player:entered', vehicle)
+        end
+    end
+end)
 
 AddEventHandler('vehicle:player:entered', function (vehicle)
     local playerPed = PlayerPedId()
     local model = GetEntityModel(vehicle)
-    if not IsEntityAMissionEntity(vehicle) then
+    if not IsEntityAMissionEntity(vehicle) and PERSIST_STOLEN then
         SetEntityAsMissionEntity(vehicle, true, true)
     end
     for _, veh in pairs(vehicleHandlings) do
