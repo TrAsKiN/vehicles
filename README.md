@@ -52,9 +52,9 @@ To add functionality, simply call the function `exports.vehicles:registerVehicle
 
 The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
 
-### Triggered events
+## Triggered events
 
-#### Client-side events
+### Client-side events
 
 - `vehicle:player:entered`
   - *vehicle*: number
@@ -63,7 +63,7 @@ The functions take as input the array of values defined in `data` and **must** r
 - `vehicle:data:sync`
   - *vehicles*: table
 
-#### Server-side events
+### Server-side events
 
 - `vehicle:player:eject`
   - *velocity*: vector3
@@ -72,14 +72,14 @@ The functions take as input the array of values defined in `data` and **must** r
   - *property*: string
   - *value*: any
 
-### Useful functions
+## Useful functions
 
 Here is a list of useful functions. To use the functions, just call them in the following ways:
 
 - `exports.<folder name>:<function>`
 - `exports['<folder name>']:<function>`
 
-#### List of functions
+### List of functions
 
 - `getSeatbeltStatus()`: returns the status of the seat belt
 - `getSpeedLimit()`: returns the speed limit in kilometers per second
