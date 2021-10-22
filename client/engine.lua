@@ -22,14 +22,14 @@ local lopped = function (vehicle, data)
         if not data.failure and gForce > ENGINE_FAILURE_GFORCE then
             local failureTime = math.ceil(data.curentSpeed * gForce * PERCENT_ENGINE_FAILURE_TIME)
             data.failure = true
-            TriggerEvent('vehicle:engine:toggle', false)
+            exports[GetCurrentResourceName()]:engineToggle(vehicle, false)
             SetVehicleUndriveable(vehicle, true)
             data.timer = GetGameTimer() + failureTime * 1000
             print("Accident! Impact force: ".. string.format('%.2f', gForce) .."g, Engine stop time: ".. failureTime .."s.")
         elseif data.failure and GetGameTimer() >= data.timer then
             data.failure = false
             SetVehicleUndriveable(vehicle, false)
-            TriggerEvent('vehicle:engine:toggle', true)
+            exports[GetCurrentResourceName()]:engineToggle(vehicle, true)
         end
 
         if engineHealth < 900 and engineHealth > 200 then
@@ -43,8 +43,7 @@ end
 
 exports[GetCurrentResourceName()]:registerVehicleFunction('engine', data, nil, lopped, nil)
 
-AddEventHandler('vehicle:engine:toggle', function(state)
-    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+exports('engineToggle', function(vehicle, state)
     if GetIsVehicleEngineRunning(vehicle) and not state then
         SetVehicleEngineOn(vehicle, false, true, true)
     else
