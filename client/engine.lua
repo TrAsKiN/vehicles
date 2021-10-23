@@ -32,7 +32,7 @@ local lopped = function (vehicle, data)
             exports[GetCurrentResourceName()]:engineToggle(vehicle, true)
         end
 
-        if engineHealth < 900 and engineHealth > 200 then
+        if engineHealth > 200 then
             SetVehicleCheatPowerIncrease(vehicle, engineHealthPercent)
         elseif engineHealth < 200 then
             SetVehicleCheatPowerIncrease(vehicle, 0.2)
