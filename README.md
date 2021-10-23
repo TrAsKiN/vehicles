@@ -2,7 +2,7 @@
 
 Configure and manage your server's vehicles simply via variables in your `server.cfg`.
 
-## Features
+# Features
 
 - [x] Event-based activation
 - [x] Thread removal outside the vehicle
@@ -20,9 +20,9 @@ Configure and manage your server's vehicles simply via variables in your `server
   - [x] Windows
   - [x] Mute sirens
 
-## Customization
+# Customization
 
-### `server.cfg` variables
+## `server.cfg` variables
 
 - `set ejectionGForce 2.0`
 - `set engineFailureGForce 1.0`
@@ -40,21 +40,24 @@ Configure and manage your server's vehicles simply via variables in your `server
 - `set maxRoll 80.0`
 - `set persistStolen 0`
 
-### Add features
+## Add features
 
-To add functionality, simply call the function `exports.vehicles:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:
+To add functionality, simply call the function `exports.<folder name>:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:
 
 - `name`: *string*
 - `data`: *table*
 - `entered`: *function(`vehicle`, `data`)* or *nil*
+  - This function is executed only once when the player enters a vehicle
 - `looped`: *function(`vehicle`, `data`)* or *nil*
+  - This function is executed on each tick as long as the player is in a vehicle
 - `exited`: *function(`vehicle`, `data`)* or *nil*
+  - This function is executed only once when the player has left a vehicle
 
 The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
 
-## Triggered events
+# Triggered events
 
-### Client-side events
+## Client-side events
 
 - `vehicle:player:entered`
   - *vehicle*: number
@@ -63,7 +66,7 @@ The functions take as input the array of values defined in `data` and **must** r
 - `vehicle:data:sync`
   - *vehicles*: table
 
-### Server-side events
+## Server-side events
 
 - `vehicle:player:eject`
   - *velocity*: vector3
@@ -72,14 +75,14 @@ The functions take as input the array of values defined in `data` and **must** r
   - *property*: string
   - *value*: any
 
-## Useful functions
+# Useful functions
 
 Here is a list of useful functions. To use the functions, just call them in the following ways:
 
 - `exports.<folder name>:<function>`
 - `exports['<folder name>']:<function>`
 
-### List of functions
+## List of functions
 
 - `getSeatbeltStatus()`: returns the status of the seat belt
 - `getSpeedLimit()`: returns the speed limit in kilometers per second
