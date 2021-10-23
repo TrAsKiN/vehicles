@@ -42,7 +42,7 @@ RegisterCommand('vehicle:seatbelt:toggle', function()
     local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
     local model = GetEntityModel(vehicle)
     if
-        vehicle
+        IsEntityAVehicle(vehicle)
         and not IsThisModelABike(model)
         and not IsThisModelABicycle(model)
     then
