@@ -1,17 +1,21 @@
+---
+title: Home
+nav_order: 1
+description: "Configure and manage your FiveM server vehicles easily via variables in your server.cfg."
+---
+
 # Customizable vehicle management for FiveM
-{: .no_toc }
 
-Configure and manage your server's vehicles simply via variables in your `server.cfg`.
+Configure and manage your FiveM server vehicles easily via variables in your `server.cfg`. You can easily extend the possibilities by adding your own logic.
 
-# Features
-{:toc}
+## Features
 
 - Event-based activation
+- One thread to rule them all
 - Thread removal outside the vehicle
 - Customization via `server.cfg`
 - Possibility to add your own functions easily
 - Synchronization and realistic vehicle management
-
   - Persistent stolen vehicles
   - Fuel consumption
   - Engine failure
@@ -22,79 +26,3 @@ Configure and manage your server's vehicles simply via variables in your `server
   - Blinkers
   - Windows
   - Mute sirens
-
-# Customization
-{:toc}
-
-## `server.cfg` variables
-{:toc}
-
-- `set ejectionGForce 2.0`
-- `set engineFailureGForce 1.0`
-- `set percentEngineFailureTime 25`
-- `set fuelComsumptionPerSecond 0.08`
-- `set fuelComsumptionMultiplierOnReserve 1.2`
-- `set fuelComsumptionMultiplierWhenEngineSmokes 1.5`
-- `set fuelComsumptionMultiplierWhenEngineFails 2.0`
-- `set fuelComsumptionMultiplierWhenTankLeak 25.0`
-- `set collisionDamageMultiplier 4.0`
-- `set deformationDamageMultiplier 1.25`
-- `set engineDamageMultiplier 2.0`
-- `set disableRadar 1`
-- `set disableRadio 0`
-- `set maxRoll 80.0`
-- `set persistStolen 0`
-
-## Add features
-{:toc}
-
-To add functionality, simply call the function `exports.<folder name>:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:
-
-- `name`: *string*
-- `data`: *table*
-- `entered`: *function(`vehicle`, `data`)* or *nil*
-  - This function is executed only once when the player enters a vehicle
-- `looped`: *function(`vehicle`, `data`)* or *nil*
-  - This function is executed on each tick as long as the player is in a vehicle
-- `exited`: *function(`vehicle`, `data`)* or *nil*
-  - This function is executed only once when the player has left a vehicle
-
-The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
-
-# Triggered events
-{:toc}
-
-## Client-side events
-{:toc}
-
-- `vehicle:player:entered`
-  - *vehicle*: number
-- `vehicle:player:left`
-  - *vehicle*: number
-- `vehicle:data:sync`
-  - *vehicles*: table
-
-## Server-side events
-{:toc}
-
-- `vehicle:player:eject`
-  - *velocity*: vector3
-- `vehicle:data:toSync`
-  - *vehicle*: number
-  - *property*: string
-  - *value*: any
-
-# Useful functions
-{:toc}
-
-Here is a list of useful functions. To use the functions, just call them in the following ways:
-
-- `exports.<folder name>:<function>`
-- `exports['<folder name>']:<function>`
-
-## List of functions
-{:toc}
-
-- `getSeatbeltStatus()`: returns the status of the seat belt
-- `getSpeedLimit()`: returns the speed limit in kilometers per second
-- `isLimited()`: returns if the limiter is activated
