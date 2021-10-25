@@ -1,28 +1,33 @@
 # Customizable vehicle management for FiveM
+{: .no_toc }
 
 Configure and manage your server's vehicles simply via variables in your `server.cfg`.
 
 # Features
+{:toc}
 
-- [x] Event-based activation
-- [x] Thread removal outside the vehicle
-- [x] Customization via `server.cfg`
-- [x] Possibility to add your own functions easily
-- [x] Synchronization and realistic vehicle management
-  - [x] Persistent stolen vehicles
-  - [x] Fuel consumption
-  - [x] Engine failure
-  - [x] Engine power based on engine health
-  - [x] Server-side ejection
-  - [x] Safety belt
-  - [x] Speed limiter
-  - [x] Blinkers
-  - [x] Windows
-  - [x] Mute sirens
+- Event-based activation
+- Thread removal outside the vehicle
+- Customization via `server.cfg`
+- Possibility to add your own functions easily
+- Synchronization and realistic vehicle management
+
+  - Persistent stolen vehicles
+  - Fuel consumption
+  - Engine failure
+  - Engine power based on engine health
+  - Server-side ejection
+  - Safety belt
+  - Speed limiter
+  - Blinkers
+  - Windows
+  - Mute sirens
 
 # Customization
+{:toc}
 
 ## `server.cfg` variables
+{:toc}
 
 - `set ejectionGForce 2.0`
 - `set engineFailureGForce 1.0`
@@ -41,6 +46,7 @@ Configure and manage your server's vehicles simply via variables in your `server
 - `set persistStolen 0`
 
 ## Add features
+{:toc}
 
 To add functionality, simply call the function `exports.<folder name>:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:
 
@@ -56,8 +62,10 @@ To add functionality, simply call the function `exports.<folder name>:registerVe
 The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
 
 # Triggered events
+{:toc}
 
 ## Client-side events
+{:toc}
 
 - `vehicle:player:entered`
   - *vehicle*: number
@@ -67,6 +75,7 @@ The functions take as input the array of values defined in `data` and **must** r
   - *vehicles*: table
 
 ## Server-side events
+{:toc}
 
 - `vehicle:player:eject`
   - *velocity*: vector3
@@ -76,6 +85,7 @@ The functions take as input the array of values defined in `data` and **must** r
   - *value*: any
 
 # Useful functions
+{:toc}
 
 Here is a list of useful functions. To use the functions, just call them in the following ways:
 
@@ -83,6 +93,7 @@ Here is a list of useful functions. To use the functions, just call them in the 
 - `exports['<folder name>']:<function>`
 
 ## List of functions
+{:toc}
 
 - `getSeatbeltStatus()`: returns the status of the seat belt
 - `getSpeedLimit()`: returns the speed limit in kilometers per second
