@@ -1,3 +1,4 @@
+local LIMITER_INPUT = GetConvar('limiterInput', 'O')
 local speedLimit = {50, 80, 110, 130}
 local targetSpeed = 0
 local enabled = false
@@ -27,7 +28,7 @@ end
 
 exports[GetCurrentResourceName()]:registerVehicleFunction('limiter', nil, nil, looped, exited)
 
-RegisterKeyMapping('vehicle:limiter:toggle', "Switch the speed limiter", 'KEYBOARD', 'O')
+RegisterKeyMapping('vehicle:limiter:toggle', "Switch the speed limiter", 'KEYBOARD', LIMITER_INPUT)
 RegisterCommand('vehicle:limiter:toggle', function()
     if not enabled then
         enabled = true

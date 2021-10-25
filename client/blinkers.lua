@@ -1,3 +1,6 @@
+local LEFT_BLINKER_INPUT = GetConvar('leftBlinkerInput', '')
+local RIGHT_BLINKER_INPUT = GetConvar('rightBlinkerInput', '')
+
 function changeBlinker(side)
     local playerPed = PlayerPedId()
     local vehicle = GetVehiclePedIsIn(playerPed, false)
@@ -21,9 +24,9 @@ end
 RegisterCommand('vehicle:blinker:left', function()
     changeBlinker('left')
 end, false)
-RegisterKeyMapping('vehicle:blinker:left', "Left blinker", 'KEYBOARD', '')
+RegisterKeyMapping('vehicle:blinker:left', "Left blinker", 'KEYBOARD', LEFT_BLINKER_INPUT)
 
 RegisterCommand('vehicle:blinker:right', function()
     changeBlinker('right')
 end, false)
-RegisterKeyMapping('vehicle:blinker:right', "Right blinker", 'KEYBOARD', '')
+RegisterKeyMapping('vehicle:blinker:right', "Right blinker", 'KEYBOARD', RIGHT_BLINKER_INPUT)

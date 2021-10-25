@@ -21,6 +21,17 @@ nav_order: 2
 - `set maxRoll 80.0`
 - `set persistStolen 0`
 
+## Change keyboard keys
+
+The allowed keyboard keys are listed [here](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/keyboard/).
+
+- `set leftBlinkerInput ''`
+- `set rightBlinkerInput ''`
+- `set seatbeltInput 'I'`
+- `set limiterInput 'O'`
+- `set sirenToggleInput ''`
+- `set windowsInput 'J'`
+
 # Add features
 
 To add functionality, simply call the function `exports.<folder name>:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:

@@ -1,6 +1,7 @@
+local WINDOWS_INPUT = GetConvar('windowsInput', 'J')
 local windows = false
 
-RegisterKeyMapping('vehicle:windows:toggle', "Up/down windows", 'KEYBOARD', 'J')
+RegisterKeyMapping('vehicle:windows:toggle', "Up/down windows", 'KEYBOARD', WINDOWS_INPUT)
 RegisterCommand('vehicle:windows:toggle', function()
     local playerPed = PlayerPedId()
     local vehicle = GetVehiclePedIsIn(playerPed, false)
