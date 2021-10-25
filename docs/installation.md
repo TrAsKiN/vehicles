@@ -1,5 +1,5 @@
 ---
-title: Events and functions
+title: Installation
 nav_order: 2
 ---
 
