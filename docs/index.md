@@ -1,37 +1,89 @@
-## Welcome to GitHub Pages
+# Customizable vehicle management for FiveM
 
-You can use the [editor on GitHub](https://github.com/TrAsKiN/vehicles/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+Configure and manage your server's vehicles simply via variables in your `server.cfg`.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# Features
 
-### Markdown
+- [x] Event-based activation
+- [x] Thread removal outside the vehicle
+- [x] Customization via `server.cfg`
+- [x] Possibility to add your own functions easily
+- [x] Synchronization and realistic vehicle management
+  - [x] Persistent stolen vehicles
+  - [x] Fuel consumption
+  - [x] Engine failure
+  - [x] Engine power based on engine health
+  - [x] Server-side ejection
+  - [x] Safety belt
+  - [x] Speed limiter
+  - [x] Blinkers
+  - [x] Windows
+  - [x] Mute sirens
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# Customization
 
-```markdown
-Syntax highlighted code block
+## `server.cfg` variables
 
-# Header 1
-## Header 2
-### Header 3
+- `set ejectionGForce 2.0`
+- `set engineFailureGForce 1.0`
+- `set percentEngineFailureTime 25`
+- `set fuelComsumptionPerSecond 0.08`
+- `set fuelComsumptionMultiplierOnReserve 1.2`
+- `set fuelComsumptionMultiplierWhenEngineSmokes 1.5`
+- `set fuelComsumptionMultiplierWhenEngineFails 2.0`
+- `set fuelComsumptionMultiplierWhenTankLeak 25.0`
+- `set collisionDamageMultiplier 4.0`
+- `set deformationDamageMultiplier 1.25`
+- `set engineDamageMultiplier 2.0`
+- `set disableRadar 1`
+- `set disableRadio 0`
+- `set maxRoll 80.0`
+- `set persistStolen 0`
 
-- Bulleted
-- List
+## Add features
 
-1. Numbered
-2. List
+To add functionality, simply call the function `exports.<folder name>:registerVehicleFunction(name, data, entered, looped, exited)` with the following parameters:
 
-**Bold** and _Italic_ and `Code` text
+- `name`: *string*
+- `data`: *table*
+- `entered`: *function(`vehicle`, `data`)* or *nil*
+  - This function is executed only once when the player enters a vehicle
+- `looped`: *function(`vehicle`, `data`)* or *nil*
+  - This function is executed on each tick as long as the player is in a vehicle
+- `exited`: *function(`vehicle`, `data`)* or *nil*
+  - This function is executed only once when the player has left a vehicle
 
-[Link](url) and ![Image](src)
-```
+The functions take as input the array of values defined in `data` and **must** return an array with the same structure (the values can be modified).
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+# Triggered events
 
-### Jekyll Themes
+## Client-side events
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/TrAsKiN/vehicles/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+- `vehicle:player:entered`
+  - *vehicle*: number
+- `vehicle:player:left`
+  - *vehicle*: number
+- `vehicle:data:sync`
+  - *vehicles*: table
 
-### Support or Contact
+## Server-side events
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+- `vehicle:player:eject`
+  - *velocity*: vector3
+- `vehicle:data:toSync`
+  - *vehicle*: number
+  - *property*: string
+  - *value*: any
+
+# Useful functions
+
+Here is a list of useful functions. To use the functions, just call them in the following ways:
+
+- `exports.<folder name>:<function>`
+- `exports['<folder name>']:<function>`
+
+## List of functions
+
+- `getSeatbeltStatus()`: returns the status of the seat belt
+- `getSpeedLimit()`: returns the speed limit in kilometers per second
+- `isLimited()`: returns if the limiter is activated
