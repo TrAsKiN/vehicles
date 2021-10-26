@@ -26,9 +26,9 @@ nav_order: 3
 
 The allowed keyboard keys are listed [here](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/keyboard/).
 
-- `set leftBlinkerInput ''`
-- `set rightBlinkerInput ''`
-- `set seatbeltInput 'I'`
-- `set limiterInput 'O'`
-- `set sirenToggleInput ''`
-- `set windowsInput 'J'`
+- `setr leftBlinkerInput ''`
+- `setr rightBlinkerInput ''`
+- `setr seatbeltInput 'I'`
+- `setr limiterInput 'O'`
+- `setr sirenToggleInput ''`
+- `setr windowsInput 'J'`
