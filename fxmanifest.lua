@@ -7,6 +7,7 @@ description 'Customizable vehicle management'
 lua54 'yes'
 
 files {
+    'locale/*.json',
     'data/vehicleHandlings.json',
 }
 

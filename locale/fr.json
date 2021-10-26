@@ -1,0 +1,16 @@
+{
+    "input": {
+        "blinker": {
+            "left": "Clignotant droit",
+            "right": "Clignotant gauche"
+        },
+        "seatbelt": "Ceinture de sécurité",
+        "limiter": "Basculer le limiteur de vitesse",
+        "siren": "Allumer/éteindre le son de la sirène",
+        "windows": "Monter/descendre les fenêtres"
+    },
+    "message": {
+        "seatbelt": "Votre ceinture est attachée",
+        "accident": "Accident ! Force de l'impact : %.2fg, Temps d'arrêt du moteur : %02ds."
+    }
+}

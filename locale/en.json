@@ -1,0 +1,16 @@
+{
+    "input": {
+        "blinker": {
+            "left": "Left blinker",
+            "right": "Right blinker"
+        },
+        "seatbelt": "Seatbelt",
+        "limiter": "Switch the speed limiter",
+        "siren": "Toggle siren sound",
+        "windows": "Up/down windows"
+    },
+    "message": {
+        "seatbelt": "Your seatbelt is fastened",
+        "accident": "Accident! Impact force: %.2fg, Engine stop time: %02ds."
+    }
+}

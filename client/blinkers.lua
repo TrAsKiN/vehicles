@@ -1,3 +1,4 @@
+local RESOURCE_NAME = GetCurrentResourceName()
 local LEFT_BLINKER_INPUT = GetConvar('leftBlinkerInput', '')
 local RIGHT_BLINKER_INPUT = GetConvar('rightBlinkerInput', '')
 
@@ -24,9 +25,9 @@ end
 RegisterCommand('vehicle:blinker:left', function()
     changeBlinker('left')
 end, false)
-RegisterKeyMapping('vehicle:blinker:left', "Left blinker", 'KEYBOARD', LEFT_BLINKER_INPUT)
+RegisterKeyMapping('vehicle:blinker:left', exports[RESOURCE_NAME]:getLocale().input.blinker.left, 'KEYBOARD', LEFT_BLINKER_INPUT)
 
 RegisterCommand('vehicle:blinker:right', function()
     changeBlinker('right')
 end, false)
-RegisterKeyMapping('vehicle:blinker:right', "Right blinker", 'KEYBOARD', RIGHT_BLINKER_INPUT)
+RegisterKeyMapping('vehicle:blinker:right', exports[RESOURCE_NAME]:getLocale().input.blinker.right, 'KEYBOARD', RIGHT_BLINKER_INPUT)

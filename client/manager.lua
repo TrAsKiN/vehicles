@@ -7,6 +7,13 @@ local DISABLE_RADAR = tonumber(GetConvar('disableRadar', '1'))
 local DISABLE_RADIO = tonumber(GetConvar('disableRadio', '0'))
 local MAX_ROLL = tonumber(GetConvar('maxRoll', '80.0'))
 local PERSIST_STOLEN = tonumber(GetConvar('persistStolen', '0'))
+local LOCALE = GetConvar('lang', 'en')
+
+local locale = json.decode(LoadResourceFile(GetCurrentResourceName(), 'locale/en.json'))
+local localeFile = LoadResourceFile(GetCurrentResourceName(), 'locale/'.. LOCALE ..'.json')
+if localeFile then
+    locale = json.decode(localeFile)
+end
 
 AddEventHandler('gameEventTriggered', function (name, data)
     if name == 'CEventNetworkPlayerEnteredVehicle' then
@@ -125,4 +132,8 @@ exports('registerVehicleFunction', function (name, data, entered, looped, exited
             exited = exited
         }
     end
+end)
+
+exports('getLocale', function ()
+    return locale
 end)

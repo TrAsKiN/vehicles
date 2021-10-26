@@ -1,4 +1,5 @@
-local SEATBELT_INPUT = tonumber(GetConvar('seatbeltInput', 'I'))
+local RESOURCE_NAME = GetCurrentResourceName()
+local SEATBELT_INPUT = GetConvar('seatbeltInput', 'I')
 local EJECTION_GFORCE = tonumber(GetConvar('ejectionGForce', '2.0'))
 local seatbelt = false
 local data = {
@@ -16,11 +17,11 @@ local lopped = function (vehicle, data)
         local prevSpeed = data.curentSpeed
         data.curentSpeed = GetEntitySpeed(vehicle)
         local gForce = (prevSpeed - data.curentSpeed) / 9.8
-        if exports[GetCurrentResourceName()]:getSeatbeltStatus() then
+        if exports[RESOURCE_NAME]:getSeatbeltStatus() then
             DisableControlAction(0, 75, true)
             DisableControlAction(2, 75, true)
             if IsDisabledControlJustPressed(0, 75) or IsDisabledControlJustPressed(2, 75) then
-                print("Your seatbelt is fastened")
+                print(exports[RESOURCE_NAME]:getLocale().message.seatbelt)
             end
         elseif not data.onEject and gForce > EJECTION_GFORCE then
             TriggerServerEvent('vehicle:player:eject', data.previousBodyVelocity)
@@ -38,7 +39,7 @@ local exited = function (vehicle, data)
     return data
 end
 
-RegisterKeyMapping('vehicle:seatbelt:toggle', "Seatbelt", 'KEYBOARD', SEATBELT_INPUT)
+RegisterKeyMapping('vehicle:seatbelt:toggle', exports[RESOURCE_NAME]:getLocale().input.seatbelt, 'KEYBOARD', SEATBELT_INPUT)
 RegisterCommand('vehicle:seatbelt:toggle', function()
     local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
     local model = GetEntityModel(vehicle)
@@ -60,4 +61,4 @@ exports('getSeatbeltStatus', function()
     return seatbelt
 end)
 
-exports[GetCurrentResourceName()]:registerVehicleFunction('ejection', data, nil, lopped, exited)
+exports[RESOURCE_NAME]:registerVehicleFunction('ejection', data, nil, lopped, exited)

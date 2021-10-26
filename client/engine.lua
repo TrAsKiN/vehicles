@@ -1,3 +1,4 @@
+local RESOURCE_NAME = GetCurrentResourceName()
 local ENGINE_FAILURE_GFORCE = tonumber(GetConvar('engineFailureGForce', '1.0'))
 local PERCENT_ENGINE_FAILURE_TIME = tonumber(GetConvar('percentEngineFailureTime', '25')) / 100
 local data = {
@@ -22,14 +23,14 @@ local lopped = function (vehicle, data)
         if not data.failure and gForce > ENGINE_FAILURE_GFORCE then
             local failureTime = math.ceil(data.curentSpeed * gForce * PERCENT_ENGINE_FAILURE_TIME)
             data.failure = true
-            exports[GetCurrentResourceName()]:engineToggle(vehicle, false)
+            exports[RESOURCE_NAME]:engineToggle(vehicle, false)
             SetVehicleUndriveable(vehicle, true)
             data.timer = GetGameTimer() + failureTime * 1000
-            print("Accident! Impact force: ".. string.format('%.2f', gForce) .."g, Engine stop time: ".. failureTime .."s.")
+            print(string.format(exports[RESOURCE_NAME]:getLocale().message.accident, gForce, failureTime))
         elseif data.failure and GetGameTimer() >= data.timer then
             data.failure = false
             SetVehicleUndriveable(vehicle, false)
-            exports[GetCurrentResourceName()]:engineToggle(vehicle, true)
+            exports[RESOURCE_NAME]:engineToggle(vehicle, true)
         end
 
         if engineHealth > 200 then
@@ -41,12 +42,12 @@ local lopped = function (vehicle, data)
     return data
 end
 
-exports[GetCurrentResourceName()]:registerVehicleFunction('engine', data, nil, lopped, nil)
+exports[RESOURCE_NAME]:registerVehicleFunction('engine', data, nil, lopped, nil)
 
 exports('engineToggle', function(vehicle, state)
     if GetIsVehicleEngineRunning(vehicle) and not state then
         SetVehicleEngineOn(vehicle, false, true, true)
-    else
+    elseif not GetIsVehicleEngineRunning(vehicle) and state then
         SetVehicleEngineOn(vehicle, true, false, false)
     end
 end)
