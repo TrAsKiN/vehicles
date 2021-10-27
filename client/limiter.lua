@@ -27,7 +27,7 @@ local exited = function (vehicle, data)
     return data
 end
 
-exports[RESOURCE_NAME]:registerVehicleFunction('limiter', nil, nil, looped, exited)
+exports[RESOURCE_NAME]:registerFunction('limiter', nil, nil, looped, exited)
 
 RegisterKeyMapping('vehicle:limiter:toggle', exports[RESOURCE_NAME]:getLocale().input.limiter, 'KEYBOARD', LIMITER_INPUT)
 RegisterCommand('vehicle:limiter:toggle', function()

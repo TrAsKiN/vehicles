@@ -42,7 +42,7 @@ local lopped = function (vehicle, data)
     return data
 end
 
-exports[RESOURCE_NAME]:registerVehicleFunction('engine', data, nil, lopped, nil)
+exports[RESOURCE_NAME]:registerFunction('engine', data, nil, lopped, nil)
 
 exports('engineToggle', function(vehicle, state)
     if GetIsVehicleEngineRunning(vehicle) and not state then

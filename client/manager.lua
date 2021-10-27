@@ -7,13 +7,21 @@ local DISABLE_RADAR = tonumber(GetConvar('disableRadar', '1'))
 local DISABLE_RADIO = tonumber(GetConvar('disableRadio', '0'))
 local MAX_ROLL = tonumber(GetConvar('maxRoll', '80.0'))
 local PERSIST_STOLEN = tonumber(GetConvar('persistStolen', '0'))
-local LOCALE = GetConvar('lang', 'en')
+local LANG = GetConvar('lang', 'en')
 
-local locale = json.decode(LoadResourceFile(GetCurrentResourceName(), 'locale/en.json'))
-local localeFile = LoadResourceFile(GetCurrentResourceName(), 'locale/'.. LOCALE ..'.json')
+local locale = nil
+local localeFile = LoadResourceFile(GetCurrentResourceName(), 'locale/'.. LANG ..'.json')
 if localeFile then
     locale = json.decode(localeFile)
+else
+    locale = json.decode(LoadResourceFile(GetCurrentResourceName(), 'locale/en.json'))
 end
+
+AddEventHandler('onResourceStart', function (resource)
+    if resource == GetCurrentResourceName() then
+        TriggerServerEvent('vehicle:data:init')
+    end
+end)
 
 AddEventHandler('gameEventTriggered', function (name, data)
     if name == 'CEventNetworkPlayerEnteredVehicle' then
@@ -27,7 +35,7 @@ end)
 AddEventHandler('vehicle:player:entered', function (vehicle)
     local playerPed = PlayerPedId()
     local model = GetEntityModel(vehicle)
-    if not IsEntityAMissionEntity(vehicle) and PERSIST_STOLEN then
+    if PERSIST_STOLEN and not IsEntityAMissionEntity(vehicle) then
         SetEntityAsMissionEntity(vehicle, true, true)
     end
     for _, veh in pairs(vehicleHandlings) do
@@ -64,12 +72,12 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
                 if DISABLE_RADAR then
                     DisplayRadar(false)
                 end
-                TriggerEvent('vehicle:player:left', vehicle)
                 for name, vehFunction in pairs(registeredFunctions) do
                     if vehFunction.exited then
                         registeredFunctions[name].data = vehFunction.exited(vehicle, registeredFunctions[name].data)
                     end
                 end
+                TriggerEvent('vehicle:player:left', vehicle)
                 return
             end
             if GetPedInVehicleSeat(vehicle, -1) == playerPed
@@ -93,10 +101,10 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
 end)
 
 RegisterNetEvent('vehicle:data:sync')
-AddEventHandler('vehicle:data:sync', function(vehicles)
+AddEventHandler('vehicle:data:sync', function (vehicles)
     for vehicleId, vehicleData in pairs(vehicles) do
         local vehicle = NetToVeh(vehicleId)
-        if vehicle and GetEntityType(vehicle) == 2 then
+        if IsEntityAVehicle(vehicle) then
             if vehicleData.windows then
                 RollDownWindow(vehicle, 0)
                 RollDownWindow(vehicle, 1)
@@ -123,7 +131,7 @@ AddEventHandler('vehicle:data:sync', function(vehicles)
     end
 end)
 
-exports('registerVehicleFunction', function (name, data, entered, looped, exited)
+exports('registerFunction', function (name, data, entered, looped, exited)
     if not registeredFunctions[name] then
         registeredFunctions[name] = {
             data = data,
@@ -132,6 +140,13 @@ exports('registerVehicleFunction', function (name, data, entered, looped, exited
             exited = exited
         }
     end
+end)
+
+exports('getSyncedData', function (vehicle)
+    if vehicles[NetToVeh(vehicle)] then
+        return vehicles[NetToVeh(vehicle)]
+    end
+    return nil
 end)
 
 exports('getLocale', function ()

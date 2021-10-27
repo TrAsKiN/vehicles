@@ -70,4 +70,4 @@ local exited = function (vehicle, data)
     return data
 end
 
-exports[GetCurrentResourceName()]:registerVehicleFunction('fuel', data, entered, looped, exited)
+exports[GetCurrentResourceName()]:registerFunction('fuel', data, entered, looped, exited)

@@ -61,4 +61,4 @@ exports('getSeatbeltStatus', function()
     return seatbelt
 end)
 
-exports[RESOURCE_NAME]:registerVehicleFunction('ejection', data, nil, lopped, exited)
+exports[RESOURCE_NAME]:registerFunction('ejection', data, nil, lopped, exited)
