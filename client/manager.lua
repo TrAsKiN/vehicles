@@ -145,8 +145,8 @@ exports('registerFunction', function (name, data, entered, looped, exited)
 end)
 
 exports('getSyncedData', function (vehicle)
-    if vehiclesData[NetToVeh(vehicle)] then
-        return vehiclesData[NetToVeh(vehicle)]
+    if vehiclesData[VehToNet(vehicle)] then
+        return vehiclesData[VehToNet(vehicle)]
     end
     return nil
 end)
