@@ -1,5 +1,6 @@
-local vehicleHandlings = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
+local vehiclesData = {}
 local registeredFunctions = {}
+local vehicleHandlings = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
 local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', '4.0'))
 local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', '1.25'))
 local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', '2.0'))
@@ -102,6 +103,7 @@ end)
 
 RegisterNetEvent('vehicle:data:sync')
 AddEventHandler('vehicle:data:sync', function (vehicles)
+    vehiclesData = vehicles
     for vehicleId, vehicleData in pairs(vehicles) do
         local vehicle = NetToVeh(vehicleId)
         if IsEntityAVehicle(vehicle) then
@@ -143,8 +145,8 @@ exports('registerFunction', function (name, data, entered, looped, exited)
 end)
 
 exports('getSyncedData', function (vehicle)
-    if vehicles[NetToVeh(vehicle)] then
-        return vehicles[NetToVeh(vehicle)]
+    if vehiclesData[NetToVeh(vehicle)] then
+        return vehiclesData[NetToVeh(vehicle)]
     end
     return nil
 end)
