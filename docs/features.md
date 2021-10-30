@@ -47,9 +47,9 @@ Let's start by creating the variables we will use.
 
 ```lua
 local data = {
-  timer = 0,
-  isElectric = false,
-  batteryLevel = 100.0
+    timer = 0,
+    isElectric = false,
+    batteryLevel = 100.0
 }
 ```
 
@@ -59,14 +59,15 @@ Now let's create the function that will be executed when entering a vehicle. Thi
 -- to add to previous code
 
 local entered = function (vehicle, data)
-  if not GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') then
-    data.isElectric = true
-    local syncedBatteryLevel = exports.vehicles:getSyncedData(vehicle).batteryLevel
-    if syncedBatteryLevel then
-      data.batteryLevel = syncedBatteryLevel
+    local maxFuel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume')
+    if maxFuel == 0.0 then
+        data.isElectric = true
+        local vehicleData = exports.vehicles:getSyncedData(vehicle)
+        if vehicleData then
+            data.batteryLevel = vehicleData.batteryLevel
+        end
     end
-  end
-  return data
+    return data
 end
 ```
 
@@ -76,30 +77,30 @@ Now let's get to the heart of our logic. We need to calculate the amount of batt
 -- to add to previous code
 
 local looped = function (vehicle, data)
-  if data.isElectric then
-    local gameTimer = GetGameTimer()
-    if gameTimer > data.timer then
-      data.timer = gameTimer + 1000
-      if data.batteryLevel > 0.0 then
-        if GetIsVehicleEngineRunning(vehicle) then
-          local engineRpm = GetVehicleCurrentRpm(vehicle)
-          local batteryConsumption = 0.1 * engineRpm
-          data.batteryLevel = data.batteryLevel - batteryConsumption
+    if data.isElectric then
+        local gameTimer = GetGameTimer()
+        if gameTimer > data.timer then
+            data.timer = gameTimer + 1000
+            if data.batteryLevel > 0.0 then
+                if GetIsVehicleEngineRunning(vehicle) then
+                    local engineRpm = GetVehicleCurrentRpm(vehicle)
+                    local batteryConsumption = 0.1 * engineRpm
+                    data.batteryLevel = data.batteryLevel - batteryConsumption
+                end
+                if not IsVehicleDriveable(vehicle, false) then
+                    SetVehicleUndriveable(vehicle, false)
+                end
+            elseif data.batteryLevel <= 0.0 then
+                if GetIsVehicleEngineRunning(vehicle) then
+                    SetVehicleEngineOn(vehicle, false, true, true)
+                end
+                if IsVehicleDriveable(vehicle, false) then
+                    SetVehicleUndriveable(vehicle, true)
+                end
+            end
         end
-        if not IsVehicleDriveable(vehicle, false) then
-          SetVehicleUndriveable(vehicle, false)
-        end
-      elseif data.batteryLevel <= 0.0 then
-        if GetIsVehicleEngineRunning(vehicle) then
-          SetVehicleEngineOn(vehicle, false, true, true)
-        end
-        if IsVehicleDriveable(vehicle, false) then
-          SetVehicleUndriveable(vehicle, true)
-        end
-      end
     end
-  end
-  return data
+    return data
 end
 ```
 
@@ -109,10 +110,10 @@ And that's it! Let's not forget to synchronize the battery data of the vehicle w
 -- to add to previous code
 
 local exited = function (vehicle, data)
-  TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'batteryLevel', data.batteryLevel)
-  data.isElectric = false
-  data.batteryLevel = 100.0
-  return data
+    TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'batteryLevel', data.batteryLevel)
+    data.isElectric = false
+    data.batteryLevel = 100.0
+    return data
 end
 ```
 
@@ -139,54 +140,55 @@ client_script 'battery.lua'
 ```lua
 -- battery.lua
 local data = {
-  timer = 0,
-  isElectric = false,
-  batteryLevel = 100.0
+    timer = 0,
+    isElectric = false,
+    batteryLevel = 100.0
 }
 
 local entered = function (vehicle, data)
-  if not GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') then
-    data.isElectric = true
-    local syncedBatteryLevel = exports.vehicles:getSyncedData(vehicle).batteryLevel
-    if syncedBatteryLevel then
-      data.batteryLevel = syncedBatteryLevel
+    local maxFuel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume')
+    if maxFuel == 0.0 then
+        data.isElectric = true
+        local vehicleData = exports.vehicles:getSyncedData(vehicle)
+        if vehicleData then
+            data.batteryLevel = vehicleData.batteryLevel
+        end
     end
-  end
-  return data
+    return data
 end
 
 local looped = function (vehicle, data)
-  if data.isElectric then
-    local gameTimer = GetGameTimer()
-    if gameTimer > data.timer then
-      data.timer = gameTimer + 1000
-      if data.batteryLevel > 0.0 then
-        if GetIsVehicleEngineRunning(vehicle) then
-          local engineRpm = GetVehicleCurrentRpm(vehicle)
-          local batteryConsumption = 0.1 * engineRpm
-          data.batteryLevel = data.batteryLevel - batteryConsumption
+    if data.isElectric then
+        local gameTimer = GetGameTimer()
+        if gameTimer > data.timer then
+            data.timer = gameTimer + 1000
+            if data.batteryLevel > 0.0 then
+                if GetIsVehicleEngineRunning(vehicle) then
+                    local engineRpm = GetVehicleCurrentRpm(vehicle)
+                    local batteryConsumption = 0.1 * engineRpm
+                    data.batteryLevel = data.batteryLevel - batteryConsumption
+                end
+                if not IsVehicleDriveable(vehicle, false) then
+                    SetVehicleUndriveable(vehicle, false)
+                end
+            elseif data.batteryLevel <= 0.0 then
+                if GetIsVehicleEngineRunning(vehicle) then
+                    SetVehicleEngineOn(vehicle, false, true, true)
+                end
+                if IsVehicleDriveable(vehicle, false) then
+                    SetVehicleUndriveable(vehicle, true)
+                end
+            end
         end
-        if not IsVehicleDriveable(vehicle, false) then
-          SetVehicleUndriveable(vehicle, false)
-        end
-      elseif data.batteryLevel <= 0.0 then
-        if GetIsVehicleEngineRunning(vehicle) then
-          SetVehicleEngineOn(vehicle, false, true, true)
-        end
-        if IsVehicleDriveable(vehicle, false) then
-          SetVehicleUndriveable(vehicle, true)
-        end
-      end
     end
-  end
-  return data
+    return data
 end
 
 local exited = function (vehicle, data)
-  TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'batteryLevel', data.batteryLevel)
-  data.isElectric = false
-  data.batteryLevel = 100.0
-  return data
+    TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'batteryLevel', data.batteryLevel)
+    data.isElectric = false
+    data.batteryLevel = 100.0
+    return data
 end
 
 exports.vehicles:registerFunction('battery', data, entered, looped, exited)
