@@ -56,8 +56,6 @@ local data = {
 Now let's create the function that will be executed when entering a vehicle. This function, like the others, takes as argument the vehicle and the data provided and must return these data (which can be modified).
 
 ```lua
--- to add to previous code
-
 local entered = function (vehicle, data)
     local maxFuel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume')
     if maxFuel == 0.0 then
@@ -74,8 +72,6 @@ end
 Now let's get to the heart of our logic. We need to calculate the amount of battery consumed that we will subtract from the current amount every second.
 
 ```lua
--- to add to previous code
-
 local looped = function (vehicle, data)
     if data.isElectric then
         local gameTimer = GetGameTimer()
@@ -107,8 +103,6 @@ end
 And that's it! Let's not forget to synchronize the battery data of the vehicle when the player leaves it with the event `vehicle:data:toSync` and to reset the variables.
 
 ```lua
--- to add to previous code
-
 local exited = function (vehicle, data)
     TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'batteryLevel', data.batteryLevel)
     data.isElectric = false
@@ -120,8 +114,6 @@ end
 All that remains is to register our data and functions so that they are taken into account.
 
 ```lua
--- to add to previous code
-
 exports.vehicles:registerFunction('battery', data, entered, looped, exited)
 ```
 
