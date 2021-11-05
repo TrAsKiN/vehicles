@@ -20,7 +20,8 @@ nav_order: 3
 - `setr disableRadio 0`
 - `setr maxRoll 80.0`
 - `setr persistStolen 0`
-- `setr lang en`
+- `setr lang 'en'`
+- `setr speedLimit '[50, 80, 110, 130]'`
 
 # Change keyboard keys
 

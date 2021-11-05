@@ -1,8 +1,7 @@
 local RESOURCE_NAME = GetCurrentResourceName()
 local LIMITER_INPUT = GetConvar('limiterInput', 'O')
-local speedLimit = {50, 80, 110, 130}
+local SPEED_LIMIT = json.decode(GetConvar('speedLimit', '[50, 80, 110, 130]'))
 local targetSpeed = 0
-local enabled = false
 
 local looped = function (vehicle, data)
     local model = GetEntityModel(vehicle)
@@ -31,27 +30,24 @@ exports[RESOURCE_NAME]:registerFunction('limiter', nil, nil, looped, exited)
 
 RegisterKeyMapping('vehicle:limiter:toggle', exports[RESOURCE_NAME]:getLocale().input.limiter, 'KEYBOARD', LIMITER_INPUT)
 RegisterCommand('vehicle:limiter:toggle', function()
-    if not enabled then
-        enabled = true
-        targetSpeed = 1
-    else
-        targetSpeed = targetSpeed + 1
-        if targetSpeed > 4 then
-            exports[RESOURCE_NAME]:resetLimiter(GetVehiclePedIsIn(PlayerPedId(), false))
-        end
+    targetSpeed = targetSpeed + 1
+    if targetSpeed > #SPEED_LIMIT then
+        exports[RESOURCE_NAME]:resetLimiter(GetVehiclePedIsIn(PlayerPedId(), false))
     end
 end, true)
 
 exports('resetLimiter', function (vehicle)
     targetSpeed = 0
-    enabled = false
     SetVehicleMaxSpeed(vehicle, 0.0)
 end)
 
 exports('getSpeedLimit', function()
-    return speedLimit[targetSpeed]
+    return SPEED_LIMIT[targetSpeed]
 end)
 
 exports('isLimited', function()
-    return enabled
+    if targetSpeed then
+        return true
+    end
+    return false
 end)
