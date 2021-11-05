@@ -1,6 +1,6 @@
 local RESOURCE_NAME = GetCurrentResourceName()
 local ENGINE_FAILURE_GFORCE = tonumber(GetConvar('engineFailureGForce', '1.0'))
-local PERCENT_ENGINE_FAILURE_TIME = tonumber(GetConvar('percentEngineFailureTime', '25')) / 100
+local PERCENT_ENGINE_FAILURE_TIME = GetConvarInt('percentEngineFailureTime', '25') / 100
 local data = {
     timer = 0,
     curentSpeed = 0.0,
@@ -26,7 +26,7 @@ local lopped = function (vehicle, data)
             exports[RESOURCE_NAME]:engineToggle(vehicle, false)
             SetVehicleUndriveable(vehicle, true)
             data.timer = GetGameTimer() + failureTime * 1000
-            print(string.format(exports[RESOURCE_NAME]:getLocale().message.accident, gForce, failureTime))
+            TriggerEvent('vehicle:engine:failed', gForce, failureTime, exports[RESOURCE_NAME]:getLocale().message.accident)
         elseif data.failure and GetGameTimer() >= data.timer then
             data.failure = false
             SetVehicleUndriveable(vehicle, false)

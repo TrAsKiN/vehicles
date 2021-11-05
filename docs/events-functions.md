@@ -11,8 +11,14 @@ nav_order: 5
   - *vehicle*: number
 - `vehicle:player:left`
   - *vehicle*: number
+- `vehicle:player:fastened`
+  - *message*: string
+- `vehicle:engine:failed`
+  - *gForce*: number
+  - *time*: integer
+  - *message*: string
 - `vehicle:data:sync`
-  - *vehicles*: table
+  - *vehicles*: table *[vehicleNetId: vehicleData]*
 
 ## Server-side events
 

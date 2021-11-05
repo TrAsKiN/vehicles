@@ -21,7 +21,7 @@ local lopped = function (vehicle, data)
             DisableControlAction(0, 75, true)
             DisableControlAction(2, 75, true)
             if IsDisabledControlJustPressed(0, 75) or IsDisabledControlJustPressed(2, 75) then
-                print(exports[RESOURCE_NAME]:getLocale().message.seatbelt)
+                TriggerEvent('vehicle:player:fastened', exports[RESOURCE_NAME]:getLocale().message.seatbelt)
             end
         elseif not data.onEject and gForce > EJECTION_GFORCE then
             TriggerServerEvent('vehicle:player:eject', data.previousBodyVelocity)
