@@ -26,7 +26,7 @@ local lopped = function (vehicle, data)
             exports[RESOURCE_NAME]:engineToggle(vehicle, false)
             SetVehicleUndriveable(vehicle, true)
             data.timer = GetGameTimer() + failureTime * 1000
-            TriggerEvent('vehicle:engine:failed', gForce, failureTime, exports[RESOURCE_NAME]:getLocale().message.accident)
+            TriggerEvent('vehicle:engine:failed', gForce, failureTime, string.format(exports[RESOURCE_NAME]:getLocale().message.accident, gForce, failureTime))
         elseif data.failure and GetGameTimer() >= data.timer then
             data.failure = false
             SetVehicleUndriveable(vehicle, false)
