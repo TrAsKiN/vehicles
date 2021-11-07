@@ -21,7 +21,7 @@ Configure and manage your FiveM server vehicles easily via variables in your `se
   - Engine failure
   - Engine power based on engine health
   - Server-side ejection
-  - Safety belt
+  - Seat belt
   - Speed limiter
   - Blinkers
   - Windows

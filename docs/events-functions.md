@@ -40,5 +40,5 @@ Here is a list of useful functions. To use the functions, just call them in the 
 
 - `getSyncedData(vehicle)`: returns the synchronized data for the vehicle in argument
 - `getSeatbeltStatus()`: returns the status of the seat belt
-- `getSpeedLimit()`: returns the speed limit in kilometers per second
+- `getSpeedLimit()`: returns the speed limit in kilometers per hour
 - `isLimited()`: returns if the limiter is activated
