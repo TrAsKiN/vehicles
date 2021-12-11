@@ -114,8 +114,12 @@ AddEventHandler('vehicle:data:sync', function (vehicles)
                 RollUpWindow(vehicle, 0)
                 RollUpWindow(vehicle, 1)
             end
-            SetVehicleHasMutedSirens(vehicle, vehicleData.mutedSirens)
-            SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
+            if vehicleData.mutedSirens ~= nil then
+                SetVehicleHasMutedSirens(vehicle, vehicleData.mutedSirens)
+            end
+            if vehicleData.fuelLevel ~= nil then
+                SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
+            end
             if vehicleData.indicatorLights == 0 then
                 SetVehicleIndicatorLights(vehicle, 0, false)
                 SetVehicleIndicatorLights(vehicle, 1, false)
