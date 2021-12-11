@@ -108,11 +108,13 @@ AddEventHandler('vehicle:data:sync', function (vehicles)
         local vehicle = NetToVeh(vehicleId)
         if IsEntityAVehicle(vehicle) then
             if type(vehicleData.windows) ~= 'nil' then
-                RollDownWindow(vehicle, 0)
-                RollDownWindow(vehicle, 1)
-            else
-                RollUpWindow(vehicle, 0)
-                RollUpWindow(vehicle, 1)
+                if vehicleData.windows then
+                    RollDownWindow(vehicle, 0)
+                    RollDownWindow(vehicle, 1)
+                else
+                    RollUpWindow(vehicle, 0)
+                    RollUpWindow(vehicle, 1)
+                end
             end
             if type(vehicleData.mutedSirens) ~= 'nil' then
                 SetVehicleHasMutedSirens(vehicle, vehicleData.mutedSirens)
@@ -120,18 +122,20 @@ AddEventHandler('vehicle:data:sync', function (vehicles)
             if type(vehicleData.fuelLevel) ~= 'nil' then
                 SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
             end
-            if vehicleData.indicatorLights == 0 then
-                SetVehicleIndicatorLights(vehicle, 0, false)
-                SetVehicleIndicatorLights(vehicle, 1, false)
-            elseif vehicleData.indicatorLights == 1 then
-                SetVehicleIndicatorLights(vehicle, 0, false)
-                SetVehicleIndicatorLights(vehicle, 1, true)
-            elseif vehicleData.indicatorLights == 2 then
-                SetVehicleIndicatorLights(vehicle, 0, true)
-                SetVehicleIndicatorLights(vehicle, 1, false)
-            elseif vehicleData.indicatorLights == 3 then
-                SetVehicleIndicatorLights(vehicle, 0, true)
-                SetVehicleIndicatorLights(vehicle, 1, true)
+            if type(vehicleData.indicatorLights) ~= 'nil' then
+                if vehicleData.indicatorLights == 0 then
+                    SetVehicleIndicatorLights(vehicle, 0, false)
+                    SetVehicleIndicatorLights(vehicle, 1, false)
+                elseif vehicleData.indicatorLights == 1 then
+                    SetVehicleIndicatorLights(vehicle, 0, false)
+                    SetVehicleIndicatorLights(vehicle, 1, true)
+                elseif vehicleData.indicatorLights == 2 then
+                    SetVehicleIndicatorLights(vehicle, 0, true)
+                    SetVehicleIndicatorLights(vehicle, 1, false)
+                elseif vehicleData.indicatorLights == 3 then
+                    SetVehicleIndicatorLights(vehicle, 0, true)
+                    SetVehicleIndicatorLights(vehicle, 1, true)
+                end
             end
         end
     end
