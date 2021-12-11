@@ -107,17 +107,17 @@ AddEventHandler('vehicle:data:sync', function (vehicles)
     for vehicleId, vehicleData in pairs(vehicles) do
         local vehicle = NetToVeh(vehicleId)
         if IsEntityAVehicle(vehicle) then
-            if vehicleData.windows then
+            if type(vehicleData.windows) == 'boolean' then
                 RollDownWindow(vehicle, 0)
                 RollDownWindow(vehicle, 1)
             else
                 RollUpWindow(vehicle, 0)
                 RollUpWindow(vehicle, 1)
             end
-            if vehicleData.mutedSirens ~= nil then
+            if type(vehicleData.mutedSirens) == 'boolean' then
                 SetVehicleHasMutedSirens(vehicle, vehicleData.mutedSirens)
             end
-            if vehicleData.fuelLevel ~= nil then
+            if type(vehicleData.fuelLevel) == 'number' then
                 SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
             end
             if vehicleData.indicatorLights == 0 then
