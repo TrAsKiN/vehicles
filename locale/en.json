@@ -4,6 +4,7 @@
             "left": "Left blinker",
             "right": "Right blinker"
         },
+        "doors": "Lock/unlock doors",
         "seatbelt": "Seatbelt",
         "limiter": "Switch the speed limiter",
         "siren": "Toggle siren sound",
