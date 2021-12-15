@@ -14,6 +14,7 @@ RegisterCommand('vehicle:doors:toggle', function()
         if GetVehicleDoorLockStatus(vehicle) > 1 then
             SetVehicleDoorsLocked(vehicle, 1)
         else
+            SetVehicleDoorsShut(vehicle, false)
             SetVehicleDoorsLocked(vehicle, 2)
         end
     end
