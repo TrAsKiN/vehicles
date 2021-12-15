@@ -14,6 +14,7 @@ files {
 client_scripts {
     'client/manager.lua',
     'client/blinkers.lua',
+    'client/doors.lua',
     'client/ejection.lua',
     'client/engine.lua',
     'client/fuel.lua',
