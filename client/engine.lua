@@ -1,4 +1,3 @@
-local RESOURCE_NAME = GetCurrentResourceName()
 local ENGINE_FAILURE_GFORCE = tonumber(GetConvar('engineFailureGForce', '1.0'))
 local PERCENT_ENGINE_FAILURE_TIME = GetConvarInt('percentEngineFailureTime', 25) / 100
 local data = {

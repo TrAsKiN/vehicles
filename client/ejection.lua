@@ -1,4 +1,3 @@
-local RESOURCE_NAME = GetCurrentResourceName()
 local SEATBELT_INPUT = GetConvar('seatbeltInput', 'I')
 local EJECTION_GFORCE = tonumber(GetConvar('ejectionGForce', '2.0'))
 local seatbelt = false

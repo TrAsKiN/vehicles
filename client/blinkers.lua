@@ -1,4 +1,3 @@
-local RESOURCE_NAME = GetCurrentResourceName()
 local LEFT_BLINKER_INPUT = GetConvar('leftBlinkerInput', '')
 local RIGHT_BLINKER_INPUT = GetConvar('rightBlinkerInput', '')
 
@@ -21,6 +20,29 @@ function changeBlinker(side)
         TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'indicatorLights', GetVehicleIndicatorLights(vehicle))
     end
 end
+
+AddEventHandler('vehicle:data:synced', function (vehicles)
+    for vehicleId, vehicleData in pairs(vehicles) do
+        local vehicle = NetToVeh(vehicleId)
+        if IsEntityAVehicle(vehicle) then
+            if type(vehicleData.indicatorLights) ~= 'nil' then
+                if vehicleData.indicatorLights == 0 then
+                    SetVehicleIndicatorLights(vehicle, 0, false)
+                    SetVehicleIndicatorLights(vehicle, 1, false)
+                elseif vehicleData.indicatorLights == 1 then
+                    SetVehicleIndicatorLights(vehicle, 0, false)
+                    SetVehicleIndicatorLights(vehicle, 1, true)
+                elseif vehicleData.indicatorLights == 2 then
+                    SetVehicleIndicatorLights(vehicle, 0, true)
+                    SetVehicleIndicatorLights(vehicle, 1, false)
+                elseif vehicleData.indicatorLights == 3 then
+                    SetVehicleIndicatorLights(vehicle, 0, true)
+                    SetVehicleIndicatorLights(vehicle, 1, true)
+                end
+            end
+        end
+    end
+end)
 
 RegisterCommand('vehicle:blinker:left', function()
     changeBlinker('left')

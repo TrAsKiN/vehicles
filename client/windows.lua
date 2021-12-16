@@ -1,4 +1,3 @@
-local RESOURCE_NAME = GetCurrentResourceName()
 local WINDOWS_INPUT = GetConvar('windowsInput', 'J')
 local windows = false
 
@@ -11,3 +10,20 @@ RegisterCommand('vehicle:windows:toggle', function()
         TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'windows', windows)
     end
 end, true)
+
+AddEventHandler('vehicle:data:synced', function (vehicles)
+    for vehicleId, vehicleData in pairs(vehicles) do
+        local vehicle = NetToVeh(vehicleId)
+        if IsEntityAVehicle(vehicle) then
+            if type(vehicleData.windows) ~= 'nil' then
+                if vehicleData.windows then
+                    RollDownWindow(vehicle, 0)
+                    RollDownWindow(vehicle, 1)
+                else
+                    RollUpWindow(vehicle, 0)
+                    RollUpWindow(vehicle, 1)
+                end
+            end
+        end
+    end
+end)

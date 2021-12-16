@@ -1,4 +1,3 @@
-local RESOURCE_NAME = GetCurrentResourceName()
 local LIMITER_INPUT = GetConvar('limiterInput', 'O')
 local SPEED_LIMIT = json.decode(GetConvar('speedLimit', '[50, 80, 110, 130]'))
 local targetSpeed = 0

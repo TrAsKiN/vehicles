@@ -70,4 +70,15 @@ local exited = function (vehicle, data)
     return data
 end
 
-exports[GetCurrentResourceName()]:registerFunction('fuel', data, entered, looped, exited)
+exports[RESOURCE_NAME]:registerFunction('fuel', data, entered, looped, exited)
+
+AddEventHandler('vehicle:data:synced', function (vehicles)
+    for vehicleId, vehicleData in pairs(vehicles) do
+        local vehicle = NetToVeh(vehicleId)
+        if IsEntityAVehicle(vehicle) then
+            if type(vehicleData.fuelLevel) ~= 'nil' then
+                SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
+            end
+        end
+    end
+end)

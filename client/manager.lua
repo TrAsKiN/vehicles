@@ -1,13 +1,15 @@
+RESOURCE_NAME = GetCurrentResourceName()
+
 local vehiclesData = {}
 local registeredFunctions = {}
 local vehicleHandlings = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
 local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', '4.0'))
 local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', '1.25'))
 local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', '2.0'))
-local DISABLE_RADAR = GetConvarInt('disableRadar', '1')
-local DISABLE_RADIO = GetConvarInt('disableRadio', '0')
+local DISABLE_RADAR = GetConvarInt('disableRadar', 1)
+local DISABLE_RADIO = GetConvarInt('disableRadio', 0)
 local MAX_ROLL = tonumber(GetConvar('maxRoll', '80.0'))
-local PERSIST_STOLEN = GetConvarInt('persistStolen', '0')
+local PERSIST_STOLEN = GetConvarInt('persistStolen', 0)
 local LANG = GetConvar('lang', 'en')
 
 local locale = nil
@@ -40,7 +42,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
         SetEntityAsMissionEntity(vehicle, true, true)
     end
     for _, veh in pairs(vehicleHandlings) do
-        if GetHashKey(veh['Id']) == model then
+        if GetHashKey(veh['Id']) == GetDisplayNameFromVehicleModel(model) then
             local fCollisionDamageMult = tonumber(string.format("%.2f", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fCollisionDamageMult')))
             local fDeformationDamageMult = tonumber(string.format("%.2f", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fDeformationDamageMult')))
             local fEngineDamageMult = tonumber(string.format("%.2f", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fEngineDamageMult')))
@@ -104,41 +106,7 @@ end)
 RegisterNetEvent('vehicle:data:sync')
 AddEventHandler('vehicle:data:sync', function (vehicles)
     vehiclesData = vehicles
-    for vehicleId, vehicleData in pairs(vehicles) do
-        local vehicle = NetToVeh(vehicleId)
-        if IsEntityAVehicle(vehicle) then
-            if type(vehicleData.windows) ~= 'nil' then
-                if vehicleData.windows then
-                    RollDownWindow(vehicle, 0)
-                    RollDownWindow(vehicle, 1)
-                else
-                    RollUpWindow(vehicle, 0)
-                    RollUpWindow(vehicle, 1)
-                end
-            end
-            if type(vehicleData.mutedSirens) ~= 'nil' then
-                SetVehicleHasMutedSirens(vehicle, vehicleData.mutedSirens)
-            end
-            if type(vehicleData.fuelLevel) ~= 'nil' then
-                SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
-            end
-            if type(vehicleData.indicatorLights) ~= 'nil' then
-                if vehicleData.indicatorLights == 0 then
-                    SetVehicleIndicatorLights(vehicle, 0, false)
-                    SetVehicleIndicatorLights(vehicle, 1, false)
-                elseif vehicleData.indicatorLights == 1 then
-                    SetVehicleIndicatorLights(vehicle, 0, false)
-                    SetVehicleIndicatorLights(vehicle, 1, true)
-                elseif vehicleData.indicatorLights == 2 then
-                    SetVehicleIndicatorLights(vehicle, 0, true)
-                    SetVehicleIndicatorLights(vehicle, 1, false)
-                elseif vehicleData.indicatorLights == 3 then
-                    SetVehicleIndicatorLights(vehicle, 0, true)
-                    SetVehicleIndicatorLights(vehicle, 1, true)
-                end
-            end
-        end
-    end
+    TriggerEvent('vehicle:data:synced', vehiclesData)
 end)
 
 exports('registerFunction', function (name, data, entered, looped, exited)
@@ -162,3 +130,23 @@ end)
 exports('getLocale', function ()
     return locale
 end)
+
+function getVehicleAhead()
+    local LAND_EMPTY_VEHICLES = 131075
+    local FLYING_EMPTY_VEHICLES = 28675
+    local RADIUS = 2.75
+    local MODEL = 0
+    local playerPed = PlayerPedId()
+    local position = GetEntityCoords(playerPed) + GetEntityForwardVector(playerPed) * 1.66
+    if IsAnyVehicleNearPoint(position, RADIUS) then
+        local landVehicle = GetClosestVehicle(position, RADIUS, MODEL, LAND_EMPTY_VEHICLES)
+        if IsEntityAVehicle(landVehicle) then
+            return landVehicle
+        end
+        local flyingVehicle = GetClosestVehicle(position, RADIUS, MODEL, FLYING_EMPTY_VEHICLES)
+        if IsEntityAVehicle(flyingVehicle) then
+            return flyingVehicle
+        end
+        return nil
+    end
+end

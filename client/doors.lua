@@ -1,4 +1,3 @@
-local RESOURCE_NAME = GetCurrentResourceName()
 local DOORS_INPUT = GetConvar('doorsInput', 'U')
 
 RegisterKeyMapping('vehicle:doors:toggle', exports[RESOURCE_NAME]:getLocale().input.doors, 'KEYBOARD', DOORS_INPUT)
@@ -10,32 +9,23 @@ RegisterCommand('vehicle:doors:toggle', function()
     else
         vehicle = getVehicleAhead()
     end
-    if vehicle then
+    if vehicle and GetPedInVehicleSeat(vehicle, -1) == playerPed then
         if GetVehicleDoorLockStatus(vehicle) > 1 then
-            SetVehicleDoorsLocked(vehicle, 1)
+            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'doors', 1)
         else
             SetVehicleDoorsShut(vehicle, false)
-            SetVehicleDoorsLocked(vehicle, 2)
+            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'doors', 2)
         end
     end
 end, true)
 
-function getVehicleAhead()
-    local LAND_VEHICLES = 131075
-    local FLYING_VEHICLES = 28675
-    local RADIUS = 2.75
-    local MODEL = 0
-    local playerPed = PlayerPedId()
-    local position = GetEntityCoords(playerPed) + GetEntityForwardVector(playerPed) * 1.66
-    if IsAnyVehicleNearPoint(position, RADIUS) then
-        local landVehicle = GetClosestVehicle(position, RADIUS, MODEL, LAND_VEHICLES)
-        if IsEntityAVehicle(landVehicle) then
-            return landVehicle
+AddEventHandler('vehicle:data:synced', function (vehicles)
+    for vehicleId, vehicleData in pairs(vehicles) do
+        local vehicle = NetToVeh(vehicleId)
+        if IsEntityAVehicle(vehicle) then
+            if type(vehicleData.doors) ~= 'nil' then
+                SetVehicleDoorsLocked(vehicle, vehicleData.doors)
+            end
         end
-        local flyingVehicle = GetClosestVehicle(position, RADIUS, MODEL, FLYING_VEHICLES)
-        if IsEntityAVehicle(flyingVehicle) then
-            return flyingVehicle
-        end
-        return nil
     end
-end
+end)
