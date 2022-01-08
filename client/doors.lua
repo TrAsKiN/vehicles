@@ -6,10 +6,13 @@ RegisterCommand('vehicle:doors:toggle', function()
     local vehicle = nil
     if IsPedInAnyVehicle(playerPed) then
         vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+        if GetPedInVehicleSeat(vehicle, -1) ~= playerPed then
+            vehicle = nil
+        end
     else
         vehicle = getVehicleAhead()
     end
-    if vehicle and GetPedInVehicleSeat(vehicle, -1) == playerPed then
+    if vehicle then
         if GetVehicleDoorLockStatus(vehicle) > 1 then
             TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'doors', 1)
         else
