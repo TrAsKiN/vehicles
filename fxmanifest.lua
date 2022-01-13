@@ -27,3 +27,15 @@ server_scripts {
     'server/manager.lua',
     'server/ejection.lua',
 }
+
+exports {
+    'registerFunction',
+    'getSyncedData',
+    'getLocale',
+    'getVehicleAhead',
+    'getSeatbeltStatus',
+    'engineToggle',
+    'resetLimiter',
+    'getSpeedLimit',
+    'isLimited',
+}

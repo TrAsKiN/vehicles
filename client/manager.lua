@@ -1,8 +1,6 @@
 RESOURCE_NAME = GetCurrentResourceName()
 
-local vehiclesData = {}
-local registeredFunctions = {}
-local vehicleHandlings = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
+local VEHICLE_HANDLINGS = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
 local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', '4.0'))
 local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', '1.25'))
 local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', '2.0'))
@@ -11,6 +9,9 @@ local DISABLE_RADIO = GetConvarInt('disableRadio', 0)
 local MAX_ROLL = tonumber(GetConvar('maxRoll', '80.0'))
 local PERSIST_STOLEN = GetConvarInt('persistStolen', 0)
 local LANG = GetConvar('lang', 'en')
+
+local vehiclesData = {}
+local registeredFunctions = {}
 
 local locale = nil
 local localeFile = LoadResourceFile(GetCurrentResourceName(), 'locale/'.. LANG ..'.json')
@@ -23,6 +24,9 @@ end
 AddEventHandler('onResourceStart', function (resource)
     if resource == GetCurrentResourceName() then
         TriggerServerEvent('vehicle:data:init')
+        if DISABLE_RADAR then
+            DisplayRadar(false)
+        end
     end
 end)
 
@@ -41,7 +45,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
     if PERSIST_STOLEN and not IsEntityAMissionEntity(vehicle) then
         SetEntityAsMissionEntity(vehicle, true, true)
     end
-    for _, veh in pairs(vehicleHandlings) do
+    for _, veh in pairs(VEHICLE_HANDLINGS) do
         if GetHashKey(veh['Id']) == GetDisplayNameFromVehicleModel(model) then
             local fCollisionDamageMult = tonumber(string.format("%.2f", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fCollisionDamageMult')))
             local fDeformationDamageMult = tonumber(string.format("%.2f", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fDeformationDamageMult')))
@@ -109,7 +113,7 @@ AddEventHandler('vehicle:data:sync', function (vehicles)
     TriggerEvent('vehicle:data:synced', vehiclesData)
 end)
 
-exports('registerFunction', function (name, data, entered, looped, exited)
+function registerFunction(name, data, entered, looped, exited)
     if not registeredFunctions[name] then
         registeredFunctions[name] = {
             data = data,
@@ -118,18 +122,18 @@ exports('registerFunction', function (name, data, entered, looped, exited)
             exited = exited
         }
     end
-end)
+end
 
-exports('getSyncedData', function (vehicle)
+function getSyncedData(vehicle)
     if vehiclesData[VehToNet(vehicle)] then
         return vehiclesData[VehToNet(vehicle)]
     end
     return nil
-end)
+end
 
-exports('getLocale', function ()
+function getLocale()
     return locale
-end)
+end
 
 function getVehicleAhead()
     local LAND_EMPTY_VEHICLES = 131075

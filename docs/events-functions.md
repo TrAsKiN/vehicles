@@ -19,9 +19,12 @@ nav_order: 5
   - *message*: string
 - `vehicle:data:sync`
   - *vehicles*: table *[vehicleNetId: vehicleData]*
+- `vehicle:data:synced`
+  - *vehicles*: table *[vehicleNetId: vehicleData]*
 
 ## Server-side events
 
+- `vehicle:data:init`
 - `vehicle:player:eject`
   - *velocity*: vector3
 - `vehicle:data:toSync`
@@ -38,7 +41,17 @@ Here is a list of useful functions. To use the functions, just call them in the 
 
 ## List of functions
 
-- `getSyncedData(vehicle)`: returns the synchronized data for the vehicle in argument
+### Getters
+
+- `getLocale()`: returns a table containing all texts in the selected language
 - `getSeatbeltStatus()`: returns the status of the seat belt
 - `getSpeedLimit()`: returns the speed limit in kilometers per hour
+- `getSyncedData(vehicle)`: returns the synchronized data for the vehicle in argument or `nil` if there is no synchronized data
+- `getVehicleAhead()`: returns the empty vehicle in front of the player
 - `isLimited()`: returns if the limiter is activated
+
+### Setters
+
+- `engineToggle(vehicle, state)`: toggle engine status
+- `registerFunction(name, data, entered, looped, exited)`: register main functions
+- `resetLimiter(vehicle)`: reset the limiter
