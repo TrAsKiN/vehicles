@@ -15,7 +15,6 @@ AddEventHandler('vehicle:data:toSync', function(vehicleId, name, data)
 end)
 
 AddEventHandler('playerEnteredScope', function (data)
-    TriggerClientEvent('vehicle:data:sync', data.for, vehicles)
     TriggerClientEvent('vehicle:data:sync', data.player, vehicles)
 end)
 
