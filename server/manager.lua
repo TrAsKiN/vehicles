@@ -14,6 +14,12 @@ AddEventHandler('vehicle:data:toSync', function(vehicleId, name, data)
     TriggerClientEvent('vehicle:data:sync', -1, vehicles)
 end)
 
+AddEventHandler('playerEnteredScope', function (data)
+    TriggerClientEvent('vehicle:data:sync', data.for, vehicles)
+    TriggerClientEvent('vehicle:data:sync', data.player, vehicles)
+end)
+
 AddEventHandler('entityRemoved', function(entityId)
     vehicles[entityId] = nil
+    TriggerClientEvent('vehicle:data:sync', -1, vehicles)
 end)
