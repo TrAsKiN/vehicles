@@ -22,7 +22,7 @@ else
 end
 
 AddEventHandler('onResourceStart', function (resource)
-    if resource == GetCurrentResourceName() then
+    if resource == RESOURCE_NAME then
         TriggerServerEvent('vehicle:data:init')
         if DISABLE_RADAR then
             DisplayRadar(false)
