@@ -154,3 +154,10 @@ function getVehicleAhead()
         return nil
     end
 end
+
+function getVehicleFromNetId(netId)
+    if NetworkDoesNetworkIdExist(netId) then
+        return NetToVeh(netId)
+    end
+    return nil
+end

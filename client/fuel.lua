@@ -77,7 +77,7 @@ if FUEL_SYSTEM then
     
     AddEventHandler('vehicle:data:synced', function (vehicles)
         for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = NetToVeh(vehicleId)
+            local vehicle = getVehicleFromNetId(vehicleId)
             if IsEntityAVehicle(vehicle) then
                 if type(vehicleData.fuelLevel) ~= 'nil' then
                     SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
