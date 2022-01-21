@@ -155,10 +155,10 @@ function getVehicleAhead()
     end
 end
 
-function getVehicleFromNetId(netId)
+function getVehicleFromNetId(netId, force)
     if NetworkDoesNetworkIdExist(netId) then
         local vehicle = NetToVeh(netId)
-        if GetPedInVehicleSeat(vehicle, -1) ~= PlayerPedId() then
+        if force or GetPedInVehicleSeat(vehicle, -1) ~= PlayerPedId() then
             return vehicle
         end
     end

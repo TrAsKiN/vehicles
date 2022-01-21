@@ -18,7 +18,7 @@ if WINDOWS_SYSTEM then
 
     AddEventHandler('vehicle:data:synced', function (vehicles)
         for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = getVehicleFromNetId(vehicleId)
+            local vehicle = getVehicleFromNetId(vehicleId, true)
             if IsEntityAVehicle(vehicle) then
                 if type(vehicleData.windows) ~= 'nil' then
                     if vehicleData.windows then
