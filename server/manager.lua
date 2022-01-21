@@ -3,13 +3,13 @@ local vehicles = {}
 RegisterNetEvent('vehicle:data:init')
 AddEventHandler('vehicle:data:init', function()
     local playerId = source
-    print("Retrieve vehicle data...", "Player: ".. playerId)
+    print("Retrieving vehicles data...", "Player: ".. playerId)
     TriggerClientEvent('vehicle:data:sync', playerId, vehicles)
 end)
 
 RegisterNetEvent('vehicle:data:toSync')
 AddEventHandler('vehicle:data:toSync', function(vehicleId, name, data)
-    print("Receiving data to synchronize...", "From: ".. source)
+    print("Receiving data to synchronize...", "From Player: ".. source)
     if not vehicles[vehicleId] then
         vehicles[vehicleId] = {}
     end
@@ -18,8 +18,7 @@ AddEventHandler('vehicle:data:toSync', function(vehicleId, name, data)
 end)
 
 AddEventHandler('playerEnteredScope', function (data)
-    print("Two players meeting, forcing synchronization...", data['player'] .." meet ".. data['for'])
-    TriggerClientEvent('vehicle:data:sync', data['for'], vehicles)
+    print("Player meets another, force synchronization...", "Player: ".. data['player'])
     TriggerClientEvent('vehicle:data:sync', data['player'], vehicles)
 end)
 
