@@ -157,7 +157,10 @@ end
 
 function getVehicleFromNetId(netId)
     if NetworkDoesNetworkIdExist(netId) then
-        return NetToVeh(netId)
+        local vehicle = NetToVeh(netId)
+        if GetPedInVehicleSeat(vehicle, -1) ~= PlayerPedId() then
+            return vehicle
+        end
     end
     return nil
 end

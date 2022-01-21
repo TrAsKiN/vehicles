@@ -4,9 +4,11 @@ local SIREN_TOGGLE_INPUT = GetConvar('sirenToggleInput', '')
 if SIREN_SYSTEM then
     RegisterCommand('vehicle:siren:toggle', function()
         local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-        TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'mutedSirens', IsVehicleSirenAudioOn(vehicle))
+        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
+            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'mutedSirens', IsVehicleSirenAudioOn(vehicle))
+        end
     end, false)
-    RegisterKeyMapping('vehicle:siren:toggle', exports[RESOURCE_NAME]:getLocale().input.siren, 'KEYBOARD', SIREN_TOGGLE_INPUT)
+    RegisterKeyMapping('vehicle:siren:toggle', getLocale().input.siren, 'KEYBOARD', SIREN_TOGGLE_INPUT)
     
     AddEventHandler('vehicle:data:synced', function (vehicles)
         for vehicleId, vehicleData in pairs(vehicles) do

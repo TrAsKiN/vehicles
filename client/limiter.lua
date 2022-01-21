@@ -9,34 +9,39 @@ if LIMITER_SYSTEM then
         local model = GetEntityModel(vehicle)
         if
             vehicle
-            and exports[RESOURCE_NAME]:isLimited()
+            and isLimited()
             and GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()
             and not IsThisModelABicycle(model)
             and not IsThisModelABoat(model)
             and not IsThisModelAHeli(model)
             and not IsThisModelAPlane(model)
             and not IsThisModelATrain(model)
-            and GetEntitySpeed(vehicle) * 3.6 < (exports[RESOURCE_NAME]:getSpeedLimit() or 0)
+            and GetEntitySpeed(vehicle) * 3.6 < (getSpeedLimit() or 0)
         then
-            SetVehicleMaxSpeed(vehicle, exports[RESOURCE_NAME]:getSpeedLimit() / 3.6)
+            SetVehicleMaxSpeed(vehicle, getSpeedLimit() / 3.6)
         end
         return data
     end
     
     local exited = function (vehicle, data)
-        exports[RESOURCE_NAME]:resetLimiter(vehicle)
+        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
+            resetLimiter(vehicle)
+        end
         return data
     end
     
-    exports[RESOURCE_NAME]:registerFunction('limiter', nil, nil, looped, exited)
+    registerFunction('limiter', nil, nil, looped, exited)
     
     RegisterCommand('vehicle:limiter:toggle', function()
-        targetSpeed = targetSpeed + 1
-        if targetSpeed > #SPEED_LIMIT then
-            exports[RESOURCE_NAME]:resetLimiter(GetVehiclePedIsIn(PlayerPedId(), false))
+        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
+            targetSpeed = targetSpeed + 1
+            if targetSpeed > #SPEED_LIMIT then
+                resetLimiter(vehicle)
+            end
         end
     end, true)
-    RegisterKeyMapping('vehicle:limiter:toggle', exports[RESOURCE_NAME]:getLocale().input.limiter, 'KEYBOARD', LIMITER_INPUT)
+    RegisterKeyMapping('vehicle:limiter:toggle', getLocale().input.limiter, 'KEYBOARD', LIMITER_INPUT)
 end
 
 function resetLimiter(vehicle)

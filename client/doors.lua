@@ -22,7 +22,7 @@ if DOORS_SYSTEM then
             end
         end
     end, true)
-    RegisterKeyMapping('vehicle:doors:toggle', exports[RESOURCE_NAME]:getLocale().input.doors, 'KEYBOARD', DOORS_INPUT)
+    RegisterKeyMapping('vehicle:doors:toggle', getLocale().input.doors, 'KEYBOARD', DOORS_INPUT)
 
     AddEventHandler('vehicle:data:synced', function (vehicles)
         for vehicleId, vehicleData in pairs(vehicles) do

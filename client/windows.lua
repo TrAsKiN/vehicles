@@ -7,12 +7,14 @@ if WINDOWS_SYSTEM then
     RegisterCommand('vehicle:windows:toggle', function()
         local playerPed = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(playerPed, false)
-        if vehicle and GetPedInVehicleSeat(vehicle, -1) == playerPed then
-            windows = not windows
-            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'windows', windows)
+        if
+            vehicle
+            and GetPedInVehicleSeat(vehicle, -1) == playerPed
+        then
+            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'windows', not getSyncedData(vehicle).windows)
         end
     end, true)
-    RegisterKeyMapping('vehicle:windows:toggle', exports[RESOURCE_NAME]:getLocale().input.windows, 'KEYBOARD', WINDOWS_INPUT)
+    RegisterKeyMapping('vehicle:windows:toggle', getLocale().input.windows, 'KEYBOARD', WINDOWS_INPUT)
 
     AddEventHandler('vehicle:data:synced', function (vehicles)
         for vehicleId, vehicleData in pairs(vehicles) do
