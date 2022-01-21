@@ -24,9 +24,7 @@ if LIMITER_SYSTEM then
     end
     
     local exited = function (vehicle, data)
-        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
-            resetLimiter(vehicle)
-        end
+        resetLimiter(vehicle)
         return data
     end
     

@@ -73,9 +73,7 @@ if FUEL_SYSTEM then
     end
     
     local exited = function (vehicle, data)
-        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
-            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'fuelLevel', GetVehicleFuelLevel(vehicle))
-        end
+        TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'fuelLevel', GetVehicleFuelLevel(vehicle))
         return data
     end
     
