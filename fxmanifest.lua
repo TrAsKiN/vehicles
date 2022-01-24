@@ -38,4 +38,5 @@ exports {
     'resetLimiter',
     'getSpeedLimit',
     'isLimited',
+    'isVehicleEmpty',
 }
