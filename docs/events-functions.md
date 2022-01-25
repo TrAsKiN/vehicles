@@ -48,6 +48,7 @@ Here is a list of useful functions. To use the functions, just call them in the 
 - `getSpeedLimit()`: returns the speed limit in kilometers per hour
 - `getSyncedData(vehicle)`: returns the synchronized data for the vehicle in argument or `nil` if there is no synchronized data
 - `getVehicleAhead()`: returns the empty vehicle in front of the player
+- `hasGps()`: returns if a gps is owned
 - `isLimited()`: returns if the limiter is activated
 - `isVehicleEmpty()`: returns if the vehicle is empty
 
@@ -55,4 +56,5 @@ Here is a list of useful functions. To use the functions, just call them in the 
 
 - `engineToggle(vehicle, state)`: toggle engine status
 - `registerFunction(name, data, entered, looped, exited)`: register main functions
+- `registerHasGps(callback)`: register callback indicating owned gps
 - `resetLimiter(vehicle)`: reset the limiter

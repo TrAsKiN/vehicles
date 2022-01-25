@@ -12,6 +12,7 @@ local LANG = GetConvar('lang', 'en')
 
 local vehiclesData = {}
 local registeredFunctions = {}
+local hasGpsCallback = function () return true end
 
 local locale = nil
 local localeFile = LoadResourceFile(GetCurrentResourceName(), 'locale/'.. LANG ..'.json')
@@ -63,7 +64,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
     end
     RollUpWindow(vehicle, 0)
     RollUpWindow(vehicle, 1)
-    if DISABLE_RADAR then
+    if DISABLE_RADAR and hasGps() then
         DisplayRadar(true)
     end
     SetVehicleRadioEnabled(vehicle, not DISABLE_RADIO)
@@ -76,7 +77,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
         while true do
             local roll = GetEntityRoll(vehicle)
             if not IsPedInAnyVehicle(playerPed) then
-                if DISABLE_RADAR then
+                if DISABLE_RADAR and not IsRadarHidden() then
                     DisplayRadar(false)
                 end
                 for name, vehFunction in pairs(registeredFunctions) do
@@ -124,6 +125,10 @@ function registerFunction(name, data, entered, looped, exited)
     end
 end
 
+function registerHasGps(callback)
+    hasGpsCallback = callback
+end
+
 function getSyncedData(vehicle)
     if vehiclesData[VehToNet(vehicle)] then
         return vehiclesData[VehToNet(vehicle)]
@@ -163,4 +168,8 @@ function getVehicleFromNetId(netId, force)
         end
     end
     return nil
+end
+
+function hasGps()
+    return hasGpsCallback()
 end

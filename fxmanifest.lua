@@ -30,6 +30,7 @@ server_scripts {
 
 exports {
     'registerFunction',
+    'registerHasGps',
     'getSyncedData',
     'getLocale',
     'getVehicleAhead',
@@ -39,4 +40,5 @@ exports {
     'getSpeedLimit',
     'isLimited',
     'isVehicleEmpty',
+    'hasGps',
 }
