@@ -26,3 +26,4 @@ Configure and manage your FiveM server vehicles easily via variables in your `se
   - Blinkers
   - Windows
   - Mute sirens
+  - Door locking system with animation
