@@ -1,6 +1,6 @@
 RESOURCE_NAME = GetCurrentResourceName()
 
-local VEHICLE_HANDLINGS = json.decode(LoadResourceFile(GetCurrentResourceName(), 'data/vehicleHandlings.json'))
+local VEHICLE_HANDLINGS = json.decode(LoadResourceFile(RESOURCE_NAME, 'data/vehicleHandlings.json'))
 local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', '4.0'))
 local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', '1.25'))
 local ENGINE_DAMAGE_MULTIPLIER = tonumber(GetConvar('engineDamageMultiplier', '2.0'))
@@ -15,17 +15,19 @@ local registeredFunctions = {}
 local hasGpsCallback = function () return true end
 
 local locale = nil
-local localeFile = LoadResourceFile(GetCurrentResourceName(), 'locale/'.. LANG ..'.json')
+local localeFile = LoadResourceFile(RESOURCE_NAME, 'locale/'.. LANG ..'.json')
 if localeFile then
     locale = json.decode(localeFile)
 else
-    locale = json.decode(LoadResourceFile(GetCurrentResourceName(), 'locale/en.json'))
+    locale = json.decode(LoadResourceFile(RESOURCE_NAME, 'locale/en.json'))
 end
 
-AddEventHandler('onResourceStart', function (resource)
+AddEventHandler('onClientResourceStart', function (resource)
     if resource == RESOURCE_NAME then
         TriggerServerEvent('vehicle:data:init')
+        repeat Wait(100) until IsMinimapRendering()
         if DISABLE_RADAR then
+            log.debug("Disabling radar...")
             DisplayRadar(false)
         end
     end
