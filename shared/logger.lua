@@ -1,4 +1,4 @@
-local LOG_LEVEL = GetConvarInt('logLevel', 1)
+local LOG_LEVEL = GetConvarInt('logLevel', 2)
 local LEVEL = {
     NONE = 0,
     ERROR = 1,
