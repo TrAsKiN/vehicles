@@ -11,6 +11,10 @@ files {
     'data/vehicleHandlings.json',
 }
 
+shared_scripts {
+    'shared/logger.lua',
+}
+
 client_scripts {
     'client/manager.lua',
     'client/blinkers.lua',
