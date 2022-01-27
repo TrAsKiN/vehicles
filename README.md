@@ -4,7 +4,7 @@ Configure and manage your FiveM server vehicles easily via variables in your `se
 
 ## Documentation
 
-Read the [documentation](https://traskin.github.io/vehicles/) to customize and configure your server.
+Read the [documentation](https://github.com/TrAsKiN/vehicles/wiki) to customize and configure your server.
 
 ## License
 
