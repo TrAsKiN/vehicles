@@ -1,7 +1,0 @@
-title: "Vehicles"
-remote_theme: pmarsceill/just-the-docs
-color_scheme: dark
-search_enabled: false
-aux_links:
-  "Vehicles on GitHub":
-    - "//github.com/TrAsKiN/vehicles"
