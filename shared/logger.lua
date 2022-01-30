@@ -24,13 +24,13 @@ end
 log = {
     error = function(...)
         if LOG_LEVEL >= LEVEL.ERROR then
-            print(showTime() .."^1[ERROR]^0 ".. listArgs(...))
+            print(showTime() .." ^1[ERROR]^0 ".. listArgs(...))
         end
     end,
     warning = function(...)
         local args = ...
         if LOG_LEVEL >= LEVEL.WARNING then
-            print(showTime() .."^8[WARNING]^0 ".. listArgs(...))
+            print(showTime() .." ^8[WARNING]^0 ".. listArgs(...))
         end
     end,
     debug = function(...)
