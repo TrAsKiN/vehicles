@@ -9,7 +9,7 @@ local LEVEL = {
 local function listArgs(...)
     local args = table.pack(...)
     for i, v in ipairs(args) do args[i] = tostring(v) end
-    return table.concat(args, ", ")
+    return table.concat(args, " ; ")
 end
 
 local function showTime()
@@ -17,26 +17,26 @@ local function showTime()
         return os.date('%H:%M:%S')
     else
         local year, month, day, hour, minute, second = GetLocalTime()
-        return hour ..":".. minute ..":".. second
+        return string.format("%02d", hour) ..":".. string.format("%02d", minute) ..":".. string.format("%02d", second)
     end
 end
 
 log = {
     error = function(...)
         if LOG_LEVEL >= LEVEL.ERROR then
-            print("[ERROR]".. showTime() .." ".. listArgs(...))
+            print(showTime() .."^1[ERROR]^0 ".. listArgs(...))
         end
     end,
     warning = function(...)
         local args = ...
         if LOG_LEVEL >= LEVEL.WARNING then
-            print("[WARNING]".. showTime() .." ".. listArgs(...))
+            print(showTime() .."^8[WARNING]^0 ".. listArgs(...))
         end
     end,
     debug = function(...)
         local args = ...
         if LOG_LEVEL >= LEVEL.DEBUG then
-            print("[DEBUG]".. showTime() .." ".. listArgs(...))
+            print(showTime() .." ^5[DEBUG]^0 ".. listArgs(...))
         end
     end
 }
