@@ -1,4 +1,4 @@
-local LOG_LEVEL = GetConvarInt('logLevel', 2)
+local LOG_LEVEL = GetConvarInt('logLevel', 1)
 local LEVEL = {
     NONE = 0,
     ERROR = 1,
@@ -14,29 +14,32 @@ end
 
 local function showTime()
     if IsDuplicityVersion() then
-        return os.date('%H:%M:%S')
+        return "[".. os.date('%H:%M:%S') .."]"
     else
         local year, month, day, hour, minute, second = GetLocalTime()
-        return string.format("%02d", hour) ..":".. string.format("%02d", minute) ..":".. string.format("%02d", second)
+        return "[".. string.format("%02d", hour) ..":".. string.format("%02d", minute) ..":".. string.format("%02d", second) .."]"
     end
 end
 
 log = {
+    info = function(...)
+        print(showTime() .."^4[INFO]^0 ".. listArgs(...))
+    end,
     error = function(...)
         if LOG_LEVEL >= LEVEL.ERROR then
-            print(showTime() .." ^1[ERROR]^0 ".. listArgs(...))
+            print(showTime() .."^8[ERROR]^0 ".. listArgs(...))
         end
     end,
     warning = function(...)
         local args = ...
         if LOG_LEVEL >= LEVEL.WARNING then
-            print(showTime() .." ^8[WARNING]^0 ".. listArgs(...))
+            print(showTime() .."^1[WARNING]^0 ".. listArgs(...))
         end
     end,
     debug = function(...)
         local args = ...
         if LOG_LEVEL >= LEVEL.DEBUG then
-            print(showTime() .." ^5[DEBUG]^0 ".. listArgs(...))
+            print(showTime() .."^2[DEBUG]^0 ".. listArgs(...))
         end
     end
 }
