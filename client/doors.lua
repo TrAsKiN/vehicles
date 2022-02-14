@@ -106,6 +106,6 @@ function isVehicleEmpty(vehicle)
     return true
 end
 
-function registerHasKeyCallback(callback)
+function registerHasKey(callback)
     hasKeyCallback = callback
 end

@@ -35,6 +35,7 @@ server_scripts {
 exports {
     'registerFunction',
     'registerHasGps',
+    'registerHasKey',
     'getSyncedData',
     'getLocale',
     'getVehicleAhead',
