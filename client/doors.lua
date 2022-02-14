@@ -3,6 +3,8 @@ local DOORS_INPUT = GetConvar('doorsInput', 'U')
 local ANIMATION_DICTIONARY = 'anim@mp_player_intmenu@key_fob@'
 local KEY_PROP = 'lr_prop_carkey_fob'
 
+local hasKeyCallback = function (vehicle) return true end
+
 if DOORS_SYSTEM then
     local function playKeyAnimation(onPed)
         while not HasAnimDictLoaded(ANIMATION_DICTIONARY) do
@@ -32,7 +34,7 @@ if DOORS_SYSTEM then
         local playerPed = PlayerPedId()
         local vehicle = nil
         if IsPedInAnyVehicle(playerPed) then
-            vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+            vehicle = GetVehiclePedIsIn(playerPed, false)
             if GetPedInVehicleSeat(vehicle, -1) ~= playerPed then
                 vehicle = nil
             end
@@ -40,7 +42,7 @@ if DOORS_SYSTEM then
             vehicle = getVehicleAhead()
             ahead = true
         end
-        if vehicle then
+        if vehicle and hasKeyCallback(vehicle) then
             if GetVehicleDoorLockStatus(vehicle) > 1 then
                 if ahead then
                     playKeyAnimation(playerPed)
@@ -66,7 +68,7 @@ if DOORS_SYSTEM then
             local vehicle = getVehicleFromNetId(vehicleId, true)
             if IsEntityAVehicle(vehicle) then
                 if type(vehicleData.doors) ~= 'nil' then
-                    playerPed = PlayerPedId()
+                    local playerPed = PlayerPedId()
                     if
                         vehicleData.doors <= 1
                         and GetVehicleDoorLockStatus(vehicle) > 1
@@ -102,4 +104,8 @@ function isVehicleEmpty(vehicle)
         end
     end
     return true
+end
+
+function registerHasKeyCallback(callback)
+    hasKeyCallback = callback
 end
