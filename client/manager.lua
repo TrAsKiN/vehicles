@@ -198,7 +198,7 @@ function getLocale()
 end
 
 function getVehicleAhead(options)
-    local flag = 0
+    local flag = 0 << 0
     if not options then
         options = {}
     end
