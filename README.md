@@ -8,4 +8,4 @@ Read the [documentation](https://github.com/TrAsKiN/vehicles/wiki) to customize 
 
 ## License
 
-License under consideration...
+Under MIT License
