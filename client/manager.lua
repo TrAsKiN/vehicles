@@ -230,8 +230,7 @@ function getVehicleAhead(options)
             end
         end
         if IsAnyVehicleNearPoint(options.position, options.radius) then
-            local filter = flag
-            local vehicle = GetClosestVehicle(options.position, options.radius, options.model, filter)
+            local vehicle = GetClosestVehicle(options.position, options.radius, options.model, flag)
             if IsEntityAVehicle(vehicle) then
                 return vehicle
             end
