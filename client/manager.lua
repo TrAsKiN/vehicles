@@ -219,7 +219,7 @@ function getVehicleAhead(options)
         local playerPed = PlayerPedId()
         options.position = GetEntityCoords(playerPed) + GetEntityForwardVector(playerPed) * options.distance
     end
-    for _, vehicles in pairs(allVehicles) do
+    for vehiclesType, vehicles in pairs(allVehicles) do
         for name, state in pairs(vehicles) do
             if state then
                 if allFlags[name] ~= nil then
@@ -233,6 +233,8 @@ function getVehicleAhead(options)
             local vehicle = GetClosestVehicle(options.position, options.radius, options.model, flag)
             if IsEntityAVehicle(vehicle) then
                 return vehicle
+            else
+                log.debug("[getVehicleAhead] No vehicle found!", vehicle)
             end
         end
     end
