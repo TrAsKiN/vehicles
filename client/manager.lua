@@ -198,7 +198,6 @@ function getLocale()
 end
 
 function getVehicleAhead(options)
-    local flag = 0
     if not options then
         options = {}
     end
@@ -219,22 +218,17 @@ function getVehicleAhead(options)
         local playerPed = PlayerPedId()
         options.position = GetEntityCoords(playerPed) + GetEntityForwardVector(playerPed) * options.distance
     end
-    for vehiclesType, vehicles in pairs(allVehicles) do
+    for _, vehicles in pairs(allVehicles) do
+        local flag = 0
         for name, state in pairs(vehicles) do
-            if state then
-                if allFlags[name] ~= nil then
-                    flag = flag | allFlags[name]
-                else
-                    log.warning(string.format("[getVehicleAhead] Flag name '%s' is not valid!", name))
-                end
+            if state and allFlags[name] then
+                flag = flag | allFlags[name]
             end
         end
         if IsAnyVehicleNearPoint(options.position, options.radius) then
-            local vehicle = GetClosestVehicle(options.position, options.radius, options.model, flag)
-            if IsEntityAVehicle(vehicle) then
+            local vehicle = GetClosestVehicle(options.position.x, options.position.y, options.position.z, options.radius, options.model, flag)
+            if DoesEntityExist(vehicle) then
                 return vehicle
-            else
-                log.debug("[getVehicleAhead] No vehicle found!", vehicle)
             end
         end
     end
