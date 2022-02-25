@@ -133,7 +133,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
     CreateThread(function ()
         while true do
             local roll = GetEntityRoll(vehicle)
-            if not IsPedInAnyVehicle(playerPed) then
+            if not IsPedInAnyVehicle(playerPed) or not DoesEntityExist(vehicle) then
                 if DISABLE_RADAR and not IsRadarHidden() then
                     DisplayRadar(false)
                 end
