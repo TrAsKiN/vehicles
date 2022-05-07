@@ -12,13 +12,12 @@ if FUEL_SYSTEM then
         maxFuelLevel = 0.0,
         isDriver = false,
     }
-    
+
     local entered = function (vehicle, data)
         data.initialFuelLevel = GetVehicleFuelLevel(vehicle)
         data.maxFuelLevel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') or data.initialFuelLevel
         if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
             data.isDriver = true
-            log.debug("Is driver")
         end
         if
             data.maxFuelLevel > 0

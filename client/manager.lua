@@ -81,7 +81,6 @@ AddEventHandler('onClientResourceStart', function (resource)
         TriggerServerEvent('vehicle:data:init')
         repeat Wait(100) until IsMinimapRendering()
         if DISABLE_RADAR then
-            log.debug("Disabling radar...")
             DisplayRadar(false)
         end
     end
@@ -100,14 +99,12 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
     local playerPed = PlayerPedId()
     local model = GetEntityModel(vehicle)
     if not Entity(vehicle).state.handlingChanged then
-        log.debug("Default Collision Damage Multiplier", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fCollisionDamageMult'))
         SetVehicleHandlingFloat(
             vehicle,
             'CHandlingData',
             'fCollisionDamageMult',
             GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fCollisionDamageMult') * COLLISION_DAMAGE_MULTIPLIER
         )
-        log.debug("New Collision Damage Multiplier", GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fCollisionDamageMult'))
         SetVehicleHandlingFloat(
             vehicle,
             'CHandlingData',
