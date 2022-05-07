@@ -78,9 +78,8 @@ local allVehicles = {
 
 AddEventHandler('onClientResourceStart', function (resource)
     if resource == RESOURCE_NAME then
-        TriggerServerEvent('vehicle:data:init')
-        repeat Wait(100) until IsMinimapRendering()
-        if DISABLE_RADAR then
+        repeat Wait(100) until PlayerPedId()
+        if DISABLE_RADAR and IsMinimapRendering() and not IsPedInAnyVehicle(PlayerPedId()) then
             DisplayRadar(false)
         end
     end
