@@ -66,3 +66,5 @@ end
 function getSeatbeltStatus()
     return seatbelt
 end
+
+exports('getSeatbeltStatus', getSeatbeltStatus)

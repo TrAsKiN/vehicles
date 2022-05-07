@@ -2,13 +2,13 @@ fx_version 'cerulean'
 game 'gta5'
 
 author 'TrAsKiN'
-description 'Customizable vehicle management'
+description 'Customizable vehicle management for FiveM'
 
 lua54 'yes'
 
 files {
     'locale/*.json',
-    'data/vehicleHandlings.json',
+    'data/*.json',
 }
 
 shared_scripts {
@@ -30,20 +30,4 @@ client_scripts {
 server_scripts {
     'server/manager.lua',
     'server/ejection.lua',
-}
-
-exports {
-    'registerFunction',
-    'registerHasGps',
-    'registerHasKey',
-    'getSyncedData',
-    'getLocale',
-    'getVehicleAhead',
-    'getSeatbeltStatus',
-    'engineToggle',
-    'resetLimiter',
-    'getSpeedLimit',
-    'isLimited',
-    'isVehicleEmpty',
-    'hasGps',
 }

@@ -19,29 +19,27 @@ if BLINKERS_SYSTEM then
             else
                 SetVehicleIndicatorLights(vehicle, side == 'left' and 1 or 0, true)
             end
-            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'indicatorLights', GetVehicleIndicatorLights(vehicle))
+            Entity(vehicle).state.indicatorLights = GetVehicleIndicatorLights(vehicle)
         end
     end
 
-    AddEventHandler('vehicle:data:synced', function (vehicles)
-        for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = getVehicleFromNetId(vehicleId)
-            if IsEntityAVehicle(vehicle) then
-                if type(vehicleData.indicatorLights) ~= 'nil' then
-                    if vehicleData.indicatorLights == 0 then
-                        SetVehicleIndicatorLights(vehicle, 0, false)
-                        SetVehicleIndicatorLights(vehicle, 1, false)
-                    elseif vehicleData.indicatorLights == 1 then
-                        SetVehicleIndicatorLights(vehicle, 0, false)
-                        SetVehicleIndicatorLights(vehicle, 1, true)
-                    elseif vehicleData.indicatorLights == 2 then
-                        SetVehicleIndicatorLights(vehicle, 0, true)
-                        SetVehicleIndicatorLights(vehicle, 1, false)
-                    elseif vehicleData.indicatorLights == 3 then
-                        SetVehicleIndicatorLights(vehicle, 0, true)
-                        SetVehicleIndicatorLights(vehicle, 1, true)
-                    end
-                end
+    AddStateBagChangeHandler('indicatorLights', nil, function(bagName, key, value, reserved, replicated)
+        if type(value) == 'nil' then return end
+        local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
+        local vehicle = getVehicleFromNetId(vehicleId)
+        if DoesEntityExist(vehicle) then
+            if value == 0 then
+                SetVehicleIndicatorLights(vehicle, 0, false)
+                SetVehicleIndicatorLights(vehicle, 1, false)
+            elseif value == 1 then
+                SetVehicleIndicatorLights(vehicle, 0, false)
+                SetVehicleIndicatorLights(vehicle, 1, true)
+            elseif value == 2 then
+                SetVehicleIndicatorLights(vehicle, 0, true)
+                SetVehicleIndicatorLights(vehicle, 1, false)
+            elseif value == 3 then
+                SetVehicleIndicatorLights(vehicle, 0, true)
+                SetVehicleIndicatorLights(vehicle, 1, true)
             end
         end
     end)

@@ -1,8 +1,8 @@
 {
     "input": {
         "blinker": {
-            "left": "Clignotant droit",
-            "right": "Clignotant gauche"
+            "left": "Clignotant gauche",
+            "right": "Clignotant droite"
         },
         "doors": "Verrouiller/déverrouiller les portes",
         "seatbelt": "Ceinture de sécurité",

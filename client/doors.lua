@@ -28,6 +28,7 @@ if DOORS_SYSTEM then
             DeleteObject(key)
         end)
     end
+
     RegisterCommand('vehicle:doors:toggle', function()
         local key = nil
         local ahead = false
@@ -49,7 +50,7 @@ if DOORS_SYSTEM then
                     PlaySoundFromEntity(-1, 'Remote_Control_Open', playerPed, 'PI_Menu_Sounds')
                     Wait(500)
                 end
-                TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'doors', 1)
+                Entity(vehicle).state:set('doors', 1, true)
             else
                 if ahead then
                     playKeyAnimation(playerPed)
@@ -57,42 +58,38 @@ if DOORS_SYSTEM then
                     Wait(500)
                 end
                 SetVehicleDoorsShut(vehicle, false)
-                TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'doors', 2)
+                Entity(vehicle).state:set('doors', 2, true)
             end
         end
     end, true)
     RegisterKeyMapping('vehicle:doors:toggle', getLocale().input.doors, 'KEYBOARD', DOORS_INPUT)
 
-    AddEventHandler('vehicle:data:synced', function (vehicles)
-        for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = getVehicleFromNetId(vehicleId, true)
-            if IsEntityAVehicle(vehicle) then
-                if type(vehicleData.doors) ~= 'nil' then
-                    local playerPed = PlayerPedId()
-                    if
-                        vehicleData.doors <= 1
-                        and GetVehicleDoorLockStatus(vehicle) > 1
-                        and IsPedTryingToEnterALockedVehicle(playerPed)
-                        and GetVehiclePedIsTryingToEnter(playerPed) == vehicle
-                    then
-                        ClearPedTasks(playerPed)
-                    end
-                    if
-                        isVehicleEmpty(vehicle)
-                        and GetVehicleDoorLockStatus(vehicle) ~= vehicleData.doors
-                    then
-                        SetVehicleLights(vehicle, 2)
-                        Wait(100)
-                        SetVehicleLights(vehicle, 0)
-                        Wait(100)
-                        SetVehicleLights(vehicle, 2)
-                        Wait(100)
-                        SetVehicleLights(vehicle, 0)
-                    end
-                    SetVehicleDoorsLocked(vehicle, vehicleData.doors)
-                end
-            end
+    AddStateBagChangeHandler('doors', nil, function(bagName, key, value, reserved, replicated)
+        if type(value) == 'nil' then return end
+        local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
+        local vehicle = NetToVeh(vehicleId)
+        local playerPed = PlayerPedId()
+        if
+            value <= 1
+            and GetVehicleDoorLockStatus(vehicle) > 1
+            and IsPedTryingToEnterALockedVehicle(playerPed)
+            and GetVehiclePedIsTryingToEnter(playerPed) == vehicle
+        then
+            ClearPedTasks(playerPed)
         end
+        if
+            isVehicleEmpty(vehicle)
+            and GetVehicleDoorLockStatus(vehicle) ~= value
+        then
+            SetVehicleLights(vehicle, 2)
+            Wait(100)
+            SetVehicleLights(vehicle, 0)
+            Wait(100)
+            SetVehicleLights(vehicle, 2)
+            Wait(100)
+            SetVehicleLights(vehicle, 0)
+        end
+        SetVehicleDoorsLocked(vehicle, value)
     end)
 end
 
@@ -109,3 +106,6 @@ end
 function registerHasKey(callback)
     hasKeyCallback = callback
 end
+
+exports('isVehicleEmpty', isVehicleEmpty)
+exports('registerHasKey', registerHasKey)

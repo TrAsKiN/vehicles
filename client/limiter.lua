@@ -57,3 +57,7 @@ function isLimited()
     end
     return false
 end
+
+exports('getSpeedLimit', getSpeedLimit)
+exports('isLimited', isLimited)
+exports('resetLimiter', resetLimiter)

@@ -9,15 +9,20 @@ if FUEL_SYSTEM then
     local data = {
         timer = 0,
         initialFuelLevel = 0.0,
-        maxFuelLevel = 0.0
+        maxFuelLevel = 0.0,
+        isDriver = false,
     }
     
     local entered = function (vehicle, data)
         data.initialFuelLevel = GetVehicleFuelLevel(vehicle)
         data.maxFuelLevel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') or data.initialFuelLevel
+        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
+            data.isDriver = true
+            log.debug("Is driver")
+        end
         if
             data.maxFuelLevel > 0
-            and GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()
+            and data.isDriver
         then
             if data.initialFuelLevel == data.maxFuelLevel then
                 SetVehicleFuelLevel(vehicle, math.random(2, math.round(data.maxFuelLevel)) + 0.0)
@@ -28,8 +33,9 @@ if FUEL_SYSTEM then
     
     local looped = function (vehicle, data)
         if
-            data.maxFuelLevel > 0
-            and GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()
+            vehicle
+            and data.maxFuelLevel > 0
+            and data.isDriver
         then
             local gameTimer = GetGameTimer()
             if gameTimer > data.timer then
@@ -73,20 +79,21 @@ if FUEL_SYSTEM then
     end
     
     local exited = function (vehicle, data)
-        TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'fuelLevel', GetVehicleFuelLevel(vehicle))
+        if data.isDriver then
+            Entity(vehicle).state:set('fuelLevel', GetVehicleFuelLevel(vehicle), true)
+        end
+        data.isDriver = false
         return data
     end
     
     exports[RESOURCE_NAME]:registerFunction('fuel', data, entered, looped, exited)
     
-    AddEventHandler('vehicle:data:synced', function (vehicles)
-        for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = getVehicleFromNetId(vehicleId)
-            if IsEntityAVehicle(vehicle) then
-                if type(vehicleData.fuelLevel) ~= 'nil' then
-                    SetVehicleFuelLevel(vehicle, vehicleData.fuelLevel)
-                end
-            end
+    AddStateBagChangeHandler('fuelLevel', nil, function(bagName, key, value, reserved, replicated)
+        if type(value) == 'nil' then return end
+        local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
+        local vehicle = getVehicleFromNetId(vehicleId, true)
+        if vehicle then
+            SetVehicleFuelLevel(vehicle, value)
         end
     end)
 end

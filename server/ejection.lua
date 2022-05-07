@@ -1,5 +1,4 @@
-RegisterNetEvent('vehicle:player:eject')
-AddEventHandler('vehicle:player:eject', function (velocity)
+RegisterNetEvent('vehicle:player:eject', function (velocity)
     local playerPed = GetPlayerPed(source)
     local position = GetEntityCoords(playerPed)
     SetEntityCoords(playerPed, position.x, position.y, position.z - 0.5, true, true, true)

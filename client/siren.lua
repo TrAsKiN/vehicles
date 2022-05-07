@@ -3,21 +3,18 @@ local SIREN_TOGGLE_INPUT = GetConvar('sirenToggleInput', '')
 
 if SIREN_SYSTEM then
     RegisterCommand('vehicle:siren:toggle', function()
-        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
-            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'mutedSirens', IsVehicleSirenAudioOn(vehicle))
+        local playerPed = PlayerPedId()
+        local vehicle = GetVehiclePedIsIn(playerPed, false)
+        if GetPedInVehicleSeat(vehicle, -1) == playerPed then
+            Entity(vehicle).state:set('mutedSirens', IsVehicleSirenAudioOn(vehicle), true)
         end
     end, false)
     RegisterKeyMapping('vehicle:siren:toggle', getLocale().input.siren, 'KEYBOARD', SIREN_TOGGLE_INPUT)
     
-    AddEventHandler('vehicle:data:synced', function (vehicles)
-        for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = getVehicleFromNetId(vehicleId, true)
-            if IsEntityAVehicle(vehicle) then
-                if type(vehicleData.mutedSirens) ~= 'nil' then
-                    SetVehicleHasMutedSirens(vehicle, vehicleData.mutedSirens)
-                end
-            end
-        end
+    AddStateBagChangeHandler('mutedSirens', nil, function(bagName, key, value, reserved, replicated)
+        if type(value) == 'nil' then return end
+        local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
+        local vehicle = getVehicleFromNetId(vehicleId)
+        SetVehicleHasMutedSirens(vehicle, value)
     end)
 end

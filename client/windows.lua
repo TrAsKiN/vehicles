@@ -11,25 +11,21 @@ if WINDOWS_SYSTEM then
             vehicle
             and GetPedInVehicleSeat(vehicle, -1) == playerPed
         then
-            TriggerServerEvent('vehicle:data:toSync', VehToNet(vehicle), 'windows', not getSyncedData(vehicle).windows)
+            Entity(vehicle).state:set('windows', not Entity(vehicle).state.windows, true)
         end
     end, true)
     RegisterKeyMapping('vehicle:windows:toggle', getLocale().input.windows, 'KEYBOARD', WINDOWS_INPUT)
 
-    AddEventHandler('vehicle:data:synced', function (vehicles)
-        for vehicleId, vehicleData in pairs(vehicles) do
-            local vehicle = getVehicleFromNetId(vehicleId, true)
-            if IsEntityAVehicle(vehicle) then
-                if type(vehicleData.windows) ~= 'nil' then
-                    if vehicleData.windows then
-                        RollDownWindow(vehicle, 0)
-                        RollDownWindow(vehicle, 1)
-                    else
-                        RollUpWindow(vehicle, 0)
-                        RollUpWindow(vehicle, 1)
-                    end
-                end
-            end
+    AddStateBagChangeHandler('windows', nil, function(bagName, key, value, reserved, replicated)
+        if type(value) == 'nil' then return end
+        local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
+        local vehicle = getVehicleFromNetId(vehicleId)
+        if value then
+            RollDownWindow(vehicle, 0)
+            RollDownWindow(vehicle, 1)
+        else
+            RollUpWindow(vehicle, 0)
+            RollUpWindow(vehicle, 1)
         end
     end)
 end
