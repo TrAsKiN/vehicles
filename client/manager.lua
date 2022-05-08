@@ -1,6 +1,5 @@
 RESOURCE_NAME = GetCurrentResourceName()
 
-local VEHICLE_HANDLINGS = json.decode(LoadResourceFile(RESOURCE_NAME, 'data/vehicleHandlings.json'))
 local AUTHORIZED_VEHICLES = json.decode(LoadResourceFile(RESOURCE_NAME, 'data/authorizedVehicles.json'))
 local COLLISION_DAMAGE_MULTIPLIER = tonumber(GetConvar('collisionDamageMultiplier', '4.0'))
 local DEFORMATION_DAMAGE_MULTIPLIER = tonumber(GetConvar('deformationDamageMultiplier', '1.25'))
@@ -10,6 +9,7 @@ local DISABLE_RADIO = GetConvarInt('disableRadio', 0)
 local MAX_ROLL = tonumber(GetConvar('maxRoll', '80.0'))
 local LANG = GetConvar('lang', 'en')
 
+local authorizedVehicles = AUTHORIZED_VEHICLES
 local registeredFunctions = {}
 local hasGpsCallback = function () return true end
 
@@ -151,7 +151,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
                 and not IsThisModelAHeli(model)
                 and not IsThisModelAJetski(model)
                 and not IsThisModelAPlane(model)
-                and not AUTHORIZED_VEHICLES[tostring(model)]
+                and not authorizedVehicles[tostring(model)]
             then
                 DisableControlAction(0, 59, true)
                 DisableControlAction(0, 60, true)
@@ -168,6 +168,14 @@ end)
 
 local function registerHasGps(callback)
     hasGpsCallback = callback
+end
+
+local function overrideAuthorizedVehicles(vehicles)
+    authorizedVehicles = vehicles
+end
+
+local function resetAuthorizedVehicles()
+    authorizedVehicles = AUTHORIZED_VEHICLES
 end
 
 function registerFunction(name, data, entered, looped, exited)
@@ -239,6 +247,8 @@ end
 
 exports('registerFunction', registerFunction)
 exports('registerHasGps', registerHasGps)
+exports('overrideAuthorizedVehicles', overrideAuthorizedVehicles)
+exports('resetAuthorizedVehicles', resetAuthorizedVehicles)
 exports('getLocale', getLocale)
 exports('getVehicleAhead', getVehicleAhead)
 exports('hasGps', hasGps)
