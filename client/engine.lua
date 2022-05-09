@@ -30,7 +30,6 @@ if ENGINE_SYSTEM then
                 engineToggle(vehicle, false, {
                     instantly = true,
                     preventRestart = true,
-                    halt = 10.0,
                 })
                 data.timer = GetGameTimer() + failureTime * 1000
                 TriggerEvent('vehicle:engine:failed', gForce, failureTime, string.format(getLocale().message.accident, gForce, failureTime))
