@@ -44,6 +44,8 @@ if DOORS_SYSTEM then
             ahead = true
         end
         if vehicle and hasKeyCallback(vehicle) then
+            NetworkRequestControlOfEntity(vehicle)
+            repeat Wait(0) until NetworkHasControlOfEntity(vehicle)
             if GetVehicleDoorLockStatus(vehicle) > 1 then
                 if ahead then
                     playKeyAnimation(playerPed)
