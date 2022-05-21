@@ -14,7 +14,7 @@ if SIREN_SYSTEM then
     AddStateBagChangeHandler('mutedSirens', nil, function(bagName, key, value, reserved, replicated)
         if type(value) == 'nil' then return end
         local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
-        local vehicle = getVehicleFromNetId(vehicleId)
+        local vehicle = getVehicleFromNetId(vehicleId, true)
         SetVehicleHasMutedSirens(vehicle, value)
     end)
 end

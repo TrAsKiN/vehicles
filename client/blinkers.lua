@@ -26,7 +26,7 @@ if BLINKERS_SYSTEM then
     AddStateBagChangeHandler('indicatorLights', nil, function(bagName, key, value, reserved, replicated)
         if type(value) == 'nil' then return end
         local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
-        local vehicle = getVehicleFromNetId(vehicleId)
+        local vehicle = getVehicleFromNetId(vehicleId, true)
         if DoesEntityExist(vehicle) then
             if value == 0 then
                 SetVehicleIndicatorLights(vehicle, 0, false)

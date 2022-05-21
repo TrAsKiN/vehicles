@@ -67,7 +67,7 @@ if DOORS_SYSTEM then
     AddStateBagChangeHandler('doors', nil, function(bagName, key, value, reserved, replicated)
         if type(value) == 'nil' then return end
         local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
-        local vehicle = NetToVeh(vehicleId)
+        local vehicle = getVehicleFromNetId(vehicleId, true)
         local playerPed = PlayerPedId()
         if
             value <= 1

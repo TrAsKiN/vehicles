@@ -19,7 +19,7 @@ if WINDOWS_SYSTEM then
     AddStateBagChangeHandler('windows', nil, function(bagName, key, value, reserved, replicated)
         if type(value) == 'nil' then return end
         local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
-        local vehicle = getVehicleFromNetId(vehicleId)
+        local vehicle = getVehicleFromNetId(vehicleId, true)
         if value then
             RollDownWindow(vehicle, 0)
             RollDownWindow(vehicle, 1)
