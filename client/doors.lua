@@ -19,23 +19,24 @@ if DOORS_SYSTEM then
             ahead = true
         end
         if vehicle and hasKeyCallback(vehicle) then
-            control(vehicle)
-            if GetVehicleDoorLockStatus(vehicle) > 1 then
-                if ahead then
-                    playKeyAnimation(playerPed)
-                    PlaySoundFromEntity(-1, 'Remote_Control_Open', playerPed, 'PI_Menu_Sounds')
-                    Wait(500)
+            control(vehicle, function ()
+                if GetVehicleDoorLockStatus(vehicle) > 1 then
+                    if ahead then
+                        playKeyAnimation(playerPed)
+                        PlaySoundFromEntity(-1, 'Remote_Control_Open', playerPed, 'PI_Menu_Sounds')
+                        Wait(500)
+                    end
+                    Entity(vehicle).state:set('doors', 1, true)
+                else
+                    if ahead then
+                        playKeyAnimation(playerPed)
+                        PlaySoundFromEntity(-1, 'Remote_Control_Close', playerPed, 'PI_Menu_Sounds')
+                        Wait(500)
+                    end
+                    SetVehicleDoorsShut(vehicle, false)
+                    Entity(vehicle).state:set('doors', 2, true)
                 end
-                Entity(vehicle).state:set('doors', 1, true)
-            else
-                if ahead then
-                    playKeyAnimation(playerPed)
-                    PlaySoundFromEntity(-1, 'Remote_Control_Close', playerPed, 'PI_Menu_Sounds')
-                    Wait(500)
-                end
-                SetVehicleDoorsShut(vehicle, false)
-                Entity(vehicle).state:set('doors', 2, true)
-            end
+            end)
         end
     end, true)
     RegisterKeyMapping('vehicle:doors:toggle', getLocale().input.doors, 'KEYBOARD', DOORS_INPUT)

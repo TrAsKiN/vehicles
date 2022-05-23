@@ -257,9 +257,9 @@ function getVehicleFromNetId(netId, force)
     return nil
 end
 
-function control(entity, maxWait)
-    if not DoesEntityExist(entity) or GetEntityType(entity) == 2 and GetPedInVehicleSeat(entity, -1) then
-        return false
+function control(entity, callback, maxWait)
+    if not DoesEntityExist(entity) then
+        return
     end
     if maxWait == nil then
         maxWait = 1000
@@ -267,7 +267,9 @@ function control(entity, maxWait)
     local endTimer = GetGameTimer() + maxWait
     NetworkRequestControlOfEntity(entity)
     repeat Wait(0) until NetworkHasControlOfEntity(entity) or GetGameTimer() > endTimer
-    return NetworkHasControlOfEntity(entity)
+    if NetworkHasControlOfEntity(entity) and callback then
+        callback()
+    end
 end
 
 function playKeyAnimation(onPed)
