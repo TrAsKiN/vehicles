@@ -18,7 +18,8 @@ if DOORS_SYSTEM then
             vehicle = getVehicleAhead()
             ahead = true
         end
-        if vehicle and hasKeyCallback(vehicle) and control(vehicle) then
+        if vehicle and hasKeyCallback(vehicle) then
+            control(vehicle)
             if GetVehicleDoorLockStatus(vehicle) > 1 then
                 if ahead then
                     playKeyAnimation(playerPed)
