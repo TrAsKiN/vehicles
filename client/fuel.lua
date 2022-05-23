@@ -12,7 +12,6 @@ if FUEL_SYSTEM then
         maxFuelLevel = 0.0,
         isDriver = false,
     }
-
     local entered = function (vehicle, data)
         data.initialFuelLevel = GetVehicleFuelLevel(vehicle)
         data.maxFuelLevel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') or data.initialFuelLevel
@@ -23,13 +22,12 @@ if FUEL_SYSTEM then
             data.maxFuelLevel > 0
             and data.isDriver
         then
-            if data.initialFuelLevel == data.maxFuelLevel then
+            if data.initialFuelLevel == data.maxFuelLevel and not Entity(vehicle).state.fuelLevel then
                 SetVehicleFuelLevel(vehicle, math.random(2, math.round(data.maxFuelLevel)) + 0.0)
             end
         end
         return data
     end
-    
     local looped = function (vehicle, data)
         if
             vehicle
@@ -44,7 +42,6 @@ if FUEL_SYSTEM then
                 local fuelLevel = GetVehicleFuelLevel(vehicle)
                 local tankHealth = GetVehiclePetrolTankHealth(vehicle)
                 local fuelPercent = (fuelLevel * 100) / data.maxFuelLevel
-
                 if GetIsVehicleEngineRunning(vehicle) then
                     local engineRpm = GetVehicleCurrentRpm(vehicle)
                     local acceleration = GetVehicleModelAcceleration(model)
@@ -76,7 +73,6 @@ if FUEL_SYSTEM then
         end
         return data
     end
-    
     local exited = function (vehicle, data)
         if data.isDriver then
             Entity(vehicle).state:set('fuelLevel', GetVehicleFuelLevel(vehicle), true)
@@ -84,9 +80,7 @@ if FUEL_SYSTEM then
         data.isDriver = false
         return data
     end
-    
     exports[RESOURCE_NAME]:registerFunction('fuel', data, entered, looped, exited)
-    
     AddStateBagChangeHandler('fuelLevel', nil, function(bagName, key, value, reserved, replicated)
         if type(value) == 'nil' then return end
         local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)
