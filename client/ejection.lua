@@ -27,6 +27,7 @@ if EJECTION_SYSTEM then
                     TriggerEvent('vehicle:player:fastened', exports[RESOURCE_NAME]:getLocale().message.seatbelt)
                 end
             elseif not data.onEject and gForce > EJECTION_GFORCE then
+                SmashVehicleWindow(vehicle, 6)
                 TriggerServerEvent('vehicle:player:eject', data.previousBodyVelocity)
                 data.onEject = true
             else
