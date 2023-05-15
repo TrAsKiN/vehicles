@@ -132,7 +132,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
     end
     RollUpWindow(vehicle, 0)
     RollUpWindow(vehicle, 1)
-    if DISABLE_RADAR and hasGps() then
+    if not DISABLE_RADAR and hasGps() then
         DisplayRadar(true)
     end
     SetVehicleRadioEnabled(vehicle, not DISABLE_RADIO)
