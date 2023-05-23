@@ -90,8 +90,8 @@ local allVehicles = {
 
 AddEventHandler('onClientResourceStart', function (resource)
     if resource == RESOURCE_NAME then
-        repeat Wait(100) until PlayerPedId()
-        if DISABLE_RADAR and IsMinimapRendering() and not IsPedInAnyVehicle(PlayerPedId()) then
+        repeat Wait(100) until PlayerPedId() and IsMinimapRendering()
+        if DISABLE_RADAR and not IsPedInAnyVehicle(PlayerPedId()) then
             DisplayRadar(false)
         end
     end
@@ -132,7 +132,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
     end
     RollUpWindow(vehicle, 0)
     RollUpWindow(vehicle, 1)
-    if not DISABLE_RADAR and hasGps() then
+    if DISABLE_RADAR and hasGps() then
         DisplayRadar(true)
     end
     SetVehicleRadioEnabled(vehicle, not DISABLE_RADIO)
