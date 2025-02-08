@@ -1,7 +1,7 @@
 local DOORS_SYSTEM = GetConvarInt('doorsSystem', 0)
 local DOORS_INPUT = GetConvar('doorsInput', 'U')
 
-local hasKeyCallback = function (vehicle) return true end
+local hasKeyCallback = function(vehicle) return true end
 
 if DOORS_SYSTEM then
     RegisterCommand('vehicle:doors:toggle', function()
@@ -19,7 +19,7 @@ if DOORS_SYSTEM then
             ahead = true
         end
         if vehicle and hasKeyCallback(vehicle) then
-            control(vehicle, function ()
+            control(vehicle, function()
                 if GetVehicleDoorLockStatus(vehicle) > 1 then
                     if ahead then
                         playKeyAnimation(playerPed)

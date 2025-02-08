@@ -10,7 +10,7 @@ if SIREN_SYSTEM then
         end
     end, false)
     RegisterKeyMapping('vehicle:siren:toggle', getLocale().input.siren, 'KEYBOARD', SIREN_TOGGLE_INPUT)
-    
+
     AddStateBagChangeHandler('mutedSirens', nil, function(bagName, key, value, reserved, replicated)
         if type(value) == 'nil' then return end
         local vehicleId = tonumber(bagName:gsub('entity:', ''), 10)

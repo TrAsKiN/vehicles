@@ -5,7 +5,7 @@ local SPEED_LIMIT = json.decode(GetConvar('speedLimit', '[50, 80, 110, 130]'))
 local targetSpeed = 0
 
 if LIMITER_SYSTEM then
-    local looped = function (vehicle, data)
+    local looped = function(vehicle, data)
         local model = GetEntityModel(vehicle)
         if
             vehicle
@@ -22,14 +22,14 @@ if LIMITER_SYSTEM then
         end
         return data
     end
-    
-    local exited = function (vehicle, data)
+
+    local exited = function(vehicle, data)
         resetLimiter(vehicle)
         return data
     end
-    
+
     registerFunction('limiter', nil, nil, looped, exited)
-    
+
     RegisterCommand('vehicle:limiter:toggle', function()
         local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
         if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then

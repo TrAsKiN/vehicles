@@ -4,6 +4,7 @@ local FUEL_COMSUMPTION_MULTIPLIER_ON_RESERVE = tonumber(GetConvar('fuelComsumpti
 local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_SMOKES = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineSmokes', '1.5'))
 local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_FAILS = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineFails', '2.0'))
 local FUEL_COMSUMPTION_MULTIPLIER_WHEN_TANK_LEAK = tonumber(GetConvar('fuelComsumptionMultiplierWhenTankLeak', '25.0'))
+local 
 
 if FUEL_SYSTEM then
     local data = {
@@ -11,16 +12,19 @@ if FUEL_SYSTEM then
         initialFuelLevel = 0.0,
         maxFuelLevel = 0.0,
         isDriver = false,
+        isElectric = false,
     }
     local entered = function (vehicle, data)
         data.initialFuelLevel = GetVehicleFuelLevel(vehicle)
         data.maxFuelLevel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') or data.initialFuelLevel
+        data.isElectric = GetVehicleHasFlag(vehicle, 43)
         if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
             data.isDriver = true
         end
         if
             data.maxFuelLevel > 0
             and data.isDriver
+            and not data.isElectric
         then
             if data.initialFuelLevel == data.maxFuelLevel and not Entity(vehicle).state.fuelLevel then
                 SetVehicleFuelLevel(vehicle, math.random(2, math.round(data.maxFuelLevel)) + 0.0)
@@ -33,6 +37,7 @@ if FUEL_SYSTEM then
             vehicle
             and data.maxFuelLevel > 0
             and data.isDriver
+            and not data.isElectric
         then
             local gameTimer = GetGameTimer()
             if gameTimer > data.timer then

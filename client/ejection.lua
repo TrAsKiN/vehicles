@@ -11,7 +11,7 @@ if EJECTION_SYSTEM then
         onEject = false
     }
 
-    local lopped = function (vehicle, data)
+    local lopped = function(vehicle, data)
         local playerPed = PlayerPedId()
         local model = GetEntityModel(vehicle)
 
@@ -38,7 +38,7 @@ if EJECTION_SYSTEM then
         return data
     end
 
-    local exited = function (vehicle, data)
+    local exited = function(vehicle, data)
         data.curentSpeed = 0.0
         return data
     end
@@ -55,9 +55,10 @@ if EJECTION_SYSTEM then
             seatbelt = not seatbelt
         end
     end, true)
-    RegisterKeyMapping('vehicle:seatbelt:toggle', exports[RESOURCE_NAME]:getLocale().input.seatbelt, 'KEYBOARD', SEATBELT_INPUT)
+    RegisterKeyMapping('vehicle:seatbelt:toggle', exports[RESOURCE_NAME]:getLocale().input.seatbelt, 'KEYBOARD',
+        SEATBELT_INPUT)
 
-    AddEventHandler('vehicle:player:left', function (vehicle)
+    AddEventHandler('vehicle:player:left', function(vehicle)
         seatbelt = false
     end)
 

@@ -13,10 +13,10 @@ local LANG = GetConvar('lang', 'en')
 
 local authorizedVehicles = AUTHORIZED_VEHICLES
 local registeredFunctions = {}
-local hasGpsCallback = function () return true end
+local hasGpsCallback = function() return true end
 
 local locale = nil
-local localeFile = LoadResourceFile(RESOURCE_NAME, 'locale/'.. LANG ..'.json')
+local localeFile = LoadResourceFile(RESOURCE_NAME, 'locale/' .. LANG .. '.json')
 if localeFile then
     locale = json.decode(localeFile)
 else
@@ -88,7 +88,7 @@ local allVehicles = {
     },
 }
 
-AddEventHandler('onClientResourceStart', function (resource)
+AddEventHandler('onClientResourceStart', function(resource)
     if resource == RESOURCE_NAME then
         repeat Wait(100) until PlayerPedId() and IsMinimapRendering()
         if DISABLE_RADAR and not IsPedInAnyVehicle(PlayerPedId()) then
@@ -97,7 +97,7 @@ AddEventHandler('onClientResourceStart', function (resource)
     end
 end)
 
-AddEventHandler('gameEventTriggered', function (name, data)
+AddEventHandler('gameEventTriggered', function(name, data)
     if name == 'CEventNetworkPlayerEnteredVehicle' then
         local player, vehicle = table.unpack(data)
         if player == PlayerId() then
@@ -106,7 +106,7 @@ AddEventHandler('gameEventTriggered', function (name, data)
     end
 end)
 
-AddEventHandler('vehicle:player:entered', function (vehicle)
+AddEventHandler('vehicle:player:entered', function(vehicle)
     local playerPed = PlayerPedId()
     local model = GetEntityModel(vehicle)
     if not Entity(vehicle).state.handlingChanged then
@@ -141,7 +141,7 @@ AddEventHandler('vehicle:player:entered', function (vehicle)
             registeredFunctions[name].data = vehFunction.entered(vehicle, registeredFunctions[name].data)
         end
     end
-    CreateThread(function ()
+    CreateThread(function()
         while true do
             local roll = GetEntityRoll(vehicle)
             if not IsPedInAnyVehicle(playerPed) or not DoesEntityExist(vehicle) then
@@ -234,7 +234,8 @@ function getVehicleAhead(options)
             end
         end
         if IsAnyVehicleNearPoint(options.position, options.radius) then
-            local vehicle = GetClosestVehicle(options.position.x, options.position.y, options.position.z, options.radius, options.model, flag)
+            local vehicle = GetClosestVehicle(options.position.x, options.position.y, options.position.z, options.radius,
+                options.model, flag)
             if DoesEntityExist(vehicle) then
                 return vehicle
             end
@@ -284,8 +285,10 @@ function playKeyAnimation(onPed)
     local x, y, z = table.unpack(GetEntityCoords(onPed))
     local key = CreateObject(KEY_PROP, x, y, z + 0.2, true, true, true)
     SetEntityAsMissionEntity(key, true, true)
-    AttachEntityToEntity(key, onPed, GetPedBoneIndex(onPed, 57005), 0.14, 0.04, -0.0175, -110.0, 95.0, -10.0, true, true, false, true, 1, true)
-    TaskPlayAnim(onPed, ANIMATION_DICTIONARY, 'fob_click_fp', 8.0, 8.0, -1, animationFlags.keepControl | animationFlags.upperBody, 1, false, false, false)
+    AttachEntityToEntity(key, onPed, GetPedBoneIndex(onPed, 57005), 0.14, 0.04, -0.0175, -110.0, 95.0, -10.0, true, true,
+        false, true, 1, true)
+    TaskPlayAnim(onPed, ANIMATION_DICTIONARY, 'fob_click_fp', 8.0, 8.0, -1,
+        animationFlags.keepControl | animationFlags.upperBody, 1, false, false, false)
     CreateThread(function()
         Wait(1200)
         SetModelAsNoLongerNeeded(KEY_PROP)
