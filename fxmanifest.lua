@@ -6,9 +6,7 @@ description 'Customizable vehicle management for FiveM'
 
 lua54 'yes'
 
-dependencies {
-    '/client:12767',
-}
+dependencies {}
 
 files {
     'locale/*.json',
