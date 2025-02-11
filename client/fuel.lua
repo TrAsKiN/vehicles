@@ -1,10 +1,11 @@
 local FUEL_SYSTEM = GetConvarInt('fuelSystem', 1)
 local FUEL_COMSUMPTION_PER_SECOND = tonumber(GetConvar('fuelComsumptionPerSecond', '0.08'))
 local FUEL_COMSUMPTION_MULTIPLIER_ON_RESERVE = tonumber(GetConvar('fuelComsumptionMultiplierOnReserve', '1.2'))
-local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_SMOKES = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineSmokes', '1.5'))
-local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_FAILS = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineFails', '2.0'))
+local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_SMOKES = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineSmokes',
+    '1.5'))
+local FUEL_COMSUMPTION_MULTIPLIER_WHEN_ENGINE_FAILS = tonumber(GetConvar('fuelComsumptionMultiplierWhenEngineFails',
+    '2.0'))
 local FUEL_COMSUMPTION_MULTIPLIER_WHEN_TANK_LEAK = tonumber(GetConvar('fuelComsumptionMultiplierWhenTankLeak', '25.0'))
-local 
 
 if FUEL_SYSTEM then
     local data = {
@@ -14,9 +15,10 @@ if FUEL_SYSTEM then
         isDriver = false,
         isElectric = false,
     }
-    local entered = function (vehicle, data)
+    local entered = function(vehicle, data)
         data.initialFuelLevel = GetVehicleFuelLevel(vehicle)
-        data.maxFuelLevel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') or data.initialFuelLevel
+        data.maxFuelLevel = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fPetrolTankVolume') or
+            data.initialFuelLevel
         data.isElectric = GetVehicleHasFlag(vehicle, 43)
         if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
             data.isDriver = true
@@ -32,7 +34,7 @@ if FUEL_SYSTEM then
         end
         return data
     end
-    local looped = function (vehicle, data)
+    local looped = function(vehicle, data)
         if
             vehicle
             and data.maxFuelLevel > 0
@@ -78,7 +80,7 @@ if FUEL_SYSTEM then
         end
         return data
     end
-    local exited = function (vehicle, data)
+    local exited = function(vehicle, data)
         if data.isDriver then
             Entity(vehicle).state:set('fuelLevel', GetVehicleFuelLevel(vehicle), true)
         end
